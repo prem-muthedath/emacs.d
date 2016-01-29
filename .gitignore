@@ -1,3 +1,5 @@
 # emacs .gitignore file
 # ignore everything EXCEPT the init.el
 !/init.el
+/*
+/**/*
