@@ -1,4 +1,5 @@
 # emacs .gitignore file
-# ignore everything EXCEPT the init.el
+# ignore everything EXCEPT init.el and README.md
 /*
 !/init.el
+!/README.md
