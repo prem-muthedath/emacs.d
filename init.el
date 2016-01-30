@@ -1,7 +1,8 @@
-;; ***************** .emacs.d/init.el **************************
+;; ***************** Prem's .emacs.d/init.el ******************
 
-;; excellent emacs setup @ https://github.com/camdez/emacs.d
-;; *************************************************************
+;; for an excellent way to organize one's emacs set up,
+;; see https://github.com/camdez/emacs.d
+;; ************************************************************
 ;; first, initialize all packages from below site
 ;; see "how to install packages using ELPA, MELPA"
 ;; link -- http://ergoemacs.org/emacs/emacs_package_system.html
