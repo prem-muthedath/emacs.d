@@ -1,6 +1,6 @@
-;; ***************** Prem's .emacs.d/init.el ******************
+;; ***************** prem's emacs.d/init.el *******************
 
-;; for an excellent way to organize one's emacs set up,
+;; for an example of a well-organized emacs set up,
 ;; see https://github.com/camdez/emacs.d
 ;; ************************************************************
 ;; first, initialize all packages from below site
@@ -11,7 +11,7 @@
              '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
 (package-initialize)
 
-;; list the packages for installation
+;; list packages for installation
 (defvar my-packages '(paredit		     
                       exec-path-from-shell
                       solarized-theme))
@@ -32,9 +32,9 @@
   (require 'ls-lisp)
   (setq ls-lisp-use-insert-directory-program nil))
 
-;; set up show-parenthesis mode
-(show-paren-mode 1)
 
+;; --------- emacs-lisp-mode settings---------------------
+;; -------------------------------------------------------
 ;; set paredit mode 
 ;; syntax from @ https://github.com/camdez/emacs.d/blob/master/core/modes.el
 ;; note -- camdez link doesn't set paredit for emacs-lisp, a mistake, but for clojure
@@ -42,14 +42,12 @@
 ;; tested matching brackets & C-M-f, C-M-b (see http://www.braveclojure.com/basic-emacs/)
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 
-;; set up imenu for easy function search --> an  emacs feature
-;; note -- imenu only lists top-level definitions -- defun, defvar, etc.
-;; see M-x imenu usage @ http://camdez.com/blog/2013/11/28/emacs-rapid-buffer-navigation-with-imenu/ 
+;; set up imenu for easy function & other top-level definitions search
 (add-hook 'emacs-lisp-mode-hook 'imenu-add-menubar-index)
-(setq imenu-auto-rescan t)
 
-;; ----  prem's emac editor settings ---------------------
-;; ---   see http://homepages.inf.ed.ac.uk/s0243221/emacs/ 
+
+;; --------- emacs editor settings -----------------------
+;; ----  see http://homepages.inf.ed.ac.uk/s0243221/emacs/
 ;; -------------------------------------------------------                  
 ;; highlight current line
 (global-hl-line-mode 1)
@@ -73,8 +71,24 @@
 ;; see /u/phils @ http://stackoverflow.com/questions/10545437/how-to-disable-the-beep-in-emacs-on-windows
 (setq visible-bell 1)
 
+;; set up show-parenthesis mode
+(show-paren-mode 1)
+
+;; imenu -- lists (only) top-level definitions -- defun, defvar, etc.
+;; see M-x imenu usage @ http://camdez.com/blog/2013/11/28/emacs-rapid-buffer-navigation-with-imenu/
+;; set up imenu to automatically rescan buffer contents to reflect new jump targets
+(setq imenu-auto-rescan t)
+
+;; disable erase-buffer (as default)
+;; to disable, replaced nil with t in the erase-buffer *enabling* code
+;; listed @ http://emacsredux.com/blog/2013/05/04/erase-buffer/
+(put 'erase-buffer 'disabled t)
+
+
+;; ------------------ themes & faces ---------------------
+;; -------------------------------------------------------
 ;; load custom theme
-;;(load-theme 'manoj-dark t) -- we don't use this anymore; instead we use solarized theme from melpa
+;;(load-theme 'manoj-dark t) -- we don't use this anymore; instead, we use solarized theme from melpa
 ;; see issue from /u/ Ryan @ http://stackoverflow.com/questions/15555309/emacs-for-windows-error-loading-color-theme
 ;; see fix from /u/ Xinan @ http://emacs.stackexchange.com/questions/2797/emacs-wont-load-theme-on-startup
 (add-hook 'after-init-hook (lambda () (load-theme 'solarized-dark t)))
@@ -113,4 +127,3 @@
  '(font-lock-comment-face ((t (:foreground "light slate gray"))))
  '(hl-line ((t (:background "dark slate gray")))))
 ;; --------------------------------------------------------
-(put 'erase-buffer 'disabled t)
