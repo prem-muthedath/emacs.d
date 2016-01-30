@@ -68,7 +68,7 @@
 (column-number-mode 1)
 
 ;; turn off end-of-buffer beep
-;; see /u/phils @ http://stackoverflow.com/questions/10545437/how-to-disable-the-beep-in-emacs-on-windows
+;; see /u/ phils @ http://stackoverflow.com/questions/10545437/how-to-disable-the-beep-in-emacs-on-windows
 (setq visible-bell 1)
 
 ;; set up show-parenthesis mode
