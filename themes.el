@@ -10,6 +10,7 @@
 ;; 6. if it doesn't exist already, add below line of code to your init.el;
 ;;    then, replace manoj-dark, or whatever theme is there in its place, with your built-in theme
 (load-theme 'manoj-dark t)
+;; 7. save your init.el and restart your emacs -- your new theme should now be in effect
 
 ;; -------- loading a custom-theme (solarized-dark, sanityinc-tomorrow-blue, etc.) ------
 ;; 1. first, make sure that, in your init.el, you are downloading (from melpa)
@@ -19,6 +20,7 @@
 ;; 4. in that list, spot the themes associated with the custom theme package you have downloaded
 ;; 5. get the exact name of the custom theme you want to load from that list
 ;; 6. see "how to load a custom theme" section to load this custom theme from your init.el
+
 
 ;; ------------------- solarized tunings  ----------------
 ;; for solarized, first we need a whole set of tunings (below) for good display
@@ -63,3 +65,4 @@
 ;; if it doesn't exist already, add the below line of code to your init.el;
 ;; then, replace solarized-dark, or whatever theme is there in its place, with your custom theme
 (add-hook 'after-init-hook (lambda () (load-theme 'solarized-dark t)))
+;; save your init.el and restart your emacs -- your new theme should now be in effect
