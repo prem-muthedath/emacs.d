@@ -15,7 +15,7 @@
 (defvar my-packages '(paredit		     
                       exec-path-from-shell
                       solarized-theme
-                      color-theme-sanityinc-tomorrow
+                      color-theme-sanityinc-tomorrow        ;; see https://github.com/purcell/color-theme-sanityinc-tomorrow
                       haskell-mode))
 
 ;; install packages
@@ -88,16 +88,9 @@
 
 
 ;; ------------------ themes & faces ---------------------
+;; in this set up, we use the default theme that comes with
+;; emacs, with a bunch of manual face customizations
 ;; -------------------------------------------------------
-;; load custom theme
-;;(load-theme 'manoj-dark t) -- we don't use this anymore; instead, we use sanityinc-tomorrow-blue theme
-;; sanityinc-tomorrow-blue theme is in melpa package color-theme-sanityinc-tomorrow
-;; see https://github.com/purcell/color-theme-sanityinc-tomorrow for details
-;; loading a custom color theme is tricky --
-;; see issue from /u/ Ryan @ http://stackoverflow.com/questions/15555309/emacs-for-windows-error-loading-color-theme
-;; see fix from /u/ Xinan @ http://emacs.stackexchange.com/questions/2797/emacs-wont-load-theme-on-startup
-(add-hook 'after-init-hook (lambda () (load-theme 'sanityinc-tomorrow-blue t)))
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -115,12 +108,20 @@
 ;; 3. you could do 1 & 2 in an another way as well: select some code, then M-x customize-face RET RET,
 ;;    & then choose foreground colors for default font, font-lock-comment-face, and anything else you wish.
 ;;    and then click apply all changes button at the top
-;; 4. choose highlight line (hl-line) color as follows: M-x customize-face RET hl-line, pick a color, & apply all changes
+;; 4. or if you M-x customize-face RET TAB, emacs will list (in another buffer) all items -- such as
+;;    font-lock-comment-face, font-lock-function-name, etc -- you can modify.  you can click on an item
+;;    and then hit RET, which will then take you to a screen where you can edit the item you clicked.
+;; 5. choose highlight line (hl-line) color as follows: M-x customize-face RET hl-line, pick a color, & apply all changes
 ;;    see /u/ juanleon @ http://stackoverflow.com/questions/17701576/changing-highlight-line-color-in-emacs
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(font-lock-comment-face ((t (:foreground "cyan4"))))
+ '(font-lock-constant-face ((t (:foreground "Magenta"))))
+ '(font-lock-keyword-face ((t (:foreground "Blue"))))
+ '(font-lock-string-face ((t (:foreground "dodger blue" :width ultra-condensed))))
+ '(font-lock-type-face ((t (:foreground "red"))))
+ '(font-lock-variable-name-face ((t (:foreground "blue violet")))))
 ;; --------------------------------------------------------

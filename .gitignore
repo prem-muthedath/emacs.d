@@ -2,4 +2,5 @@
 # ignore everything EXCEPT init.el and README.md
 /*
 !/init.el
+!/themes.el
 !/README.md
