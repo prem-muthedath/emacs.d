@@ -14,7 +14,9 @@
 ;; list packages for installation
 (defvar my-packages '(paredit		     
                       exec-path-from-shell
-                      solarized-theme))
+                      solarized-theme
+                      color-theme-sanityinc-tomorrow
+                      haskell-mode))
 
 ;; install packages
 (dolist (p my-packages)
@@ -88,10 +90,13 @@
 ;; ------------------ themes & faces ---------------------
 ;; -------------------------------------------------------
 ;; load custom theme
-;;(load-theme 'manoj-dark t) -- we don't use this anymore; instead, we use solarized theme from melpa
+;;(load-theme 'manoj-dark t) -- we don't use this anymore; instead, we use sanityinc-tomorrow-blue theme
+;; sanityinc-tomorrow-blue theme is in melpa package color-theme-sanityinc-tomorrow
+;; see https://github.com/purcell/color-theme-sanityinc-tomorrow for details
+;; loading a custom color theme is tricky --
 ;; see issue from /u/ Ryan @ http://stackoverflow.com/questions/15555309/emacs-for-windows-error-loading-color-theme
 ;; see fix from /u/ Xinan @ http://emacs.stackexchange.com/questions/2797/emacs-wont-load-theme-on-startup
-(add-hook 'after-init-hook (lambda () (load-theme 'solarized-dark t)))
+(add-hook 'after-init-hook (lambda () (load-theme 'sanityinc-tomorrow-blue t)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -100,9 +105,6 @@
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(custom-enabled-themes t)
- '(custom-safe-themes
-   (quote
-    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(show-paren-mode t))
 
 ;; see /u/ Harvey, customizing fonts, @ http://emacs.stackexchange.com/questions/2501/how-can-i-set-default-font-in-emacs
@@ -120,10 +122,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#002b36" :foreground "gray85" :inverse-video nil :box nil
-                         :strike-through nil :overline nil :underline nil :slant normal :weight normal
-                         :height 120 :width normal :foundry "nil" :family "Menlo"))))
- '(font-lock-comment-delimiter-face ((t (:foreground "light slate gray" :slant normal))))
- '(font-lock-comment-face ((t (:foreground "light slate gray"))))
- '(hl-line ((t (:background "dark slate gray")))))
+ )
 ;; --------------------------------------------------------
