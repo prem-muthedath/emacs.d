@@ -176,12 +176,12 @@
  '(default ((t (:inherit nil :stipple nil :background "#002b36" :foreground "gray85" :inverse-video nil :box nil
                          :strike-through nil :overline nil :underline nil :slant normal :weight thin :height 110
                          :width normal :foundry "nil" :family "Menlo"))))
- '(font-lock-comment-face ((t (:foreground "light sea green"))))
+ '(font-lock-comment-face ((t (:foreground "LightCyan4"))))
  '(font-lock-constant-face ((t (:foreground "#268bd2" :weight normal))))
- '(font-lock-function-name-face ((t (:foreground "dodger blue" :weight thin))))
+ '(font-lock-function-name-face ((t (:foreground "LightBlue3" :weight thin))))
  '(font-lock-keyword-face ((t (:foreground "green1"))))
  '(font-lock-string-face ((t (:foreground "SpringGreen3"))))
- '(font-lock-type-face ((t (:foreground "SkyBlue1" :weight thin))))
+ '(font-lock-type-face ((t (:foreground "DeepSkyBlue1" :weight thin))))
  '(font-lock-variable-name-face ((t (:foreground "khaki"))))
  '(haskell-operator-face ((t (:foreground "DarkSeaGreen1")))))
 ;; --------------------------------------------------------
