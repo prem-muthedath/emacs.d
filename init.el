@@ -1,9 +1,8 @@
-;; ***************** prem's emacs.d/init.el *******************
-
-;; for an example of a well-organized emacs set up,
-;; see https://github.com/camdez/emacs.d
-;; ************************************************************
-;; first, initialize all packages from below site
+;; ****************************** prem's emacs.d/init.el ************************************
+;; for an example of a well-organized emacs set up, see https://github.com/camdez/emacs.d
+;;
+;; ------------------------------- packages & environment ----------------------------------
+;; first, initialize all packages from MELPA stable
 ;; see "how to install packages using ELPA, MELPA"
 ;; link -- http://ergoemacs.org/emacs/emacs_package_system.html
 (require 'package)
@@ -11,12 +10,15 @@
              '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
 (package-initialize)
 
+
 ;; list packages for installation
 (defvar my-packages '(paredit		     
                       exec-path-from-shell
                       solarized-theme
                       color-theme-sanityinc-tomorrow  ;; see https://github.com/purcell/color-theme-sanityinc-tomorrow
-                      haskell-mode))
+                      haskell-mode
+                      ghc))  ;; ghc-mod -- see http://www.mew.org/~kazu/proj/ghc-mod/en/preparation.html
+
 
 ;; install packages
 (dolist (p my-packages)
@@ -24,13 +26,16 @@
     (package-refresh-contents)
     (package-install p)))
 
+
 ;; set PATH same as shell --> very critical!!
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
+
 ;; add load path for emacs
 ;; see http://www.emacswiki.org/emacs/LoadPath
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+
 
 ;; fix for "ls does not --dired" OS X error, seen while building imenu index (see below)
 ;; from /u/ crippledlambda @ http://stackoverflow.com/questions/4076360/error-in-dired-sorting-on-os-x
@@ -39,8 +44,7 @@
   (setq ls-lisp-use-insert-directory-program nil))
 
 
-;; --------- emacs-lisp-mode settings---------------------
-;; -------------------------------------------------------
+;; ------------------------------ emacs-lisp-mode settings ---------------------------------
 ;; set paredit mode 
 ;; syntax from @ https://github.com/camdez/emacs.d/blob/master/core/modes.el
 ;; note -- camdez sets paredit for clojure but not for emacs-lisp (a miss?)
@@ -52,26 +56,57 @@
 (add-hook 'emacs-lisp-mode-hook 'imenu-add-menubar-index)
 
 
-;; --------- emacs editor settings -----------------------
+;; ------------------------------ haskell-mode settings ------------------------------------
+;; see http://haskell.github.io/haskell-mode/manual/latest/Editing-Haskell-Code.html#Editing-Haskell-Code
+;; see https://github.com/serras/emacs-haskell-tutorial/blob/master/tutorial.md
+;; ghc-mod full details @ http://www.mew.org/~kazu/proj/ghc-mod/en/
+;; ghc-mod emacs set-up @ http://www.mew.org/~kazu/proj/ghc-mod/en/preparation.html
+;; -----------------------------------------------------------------------------------------
+(add-hook 'haskell-mode-hook 'paredit-mode)             ;; paredit
+(add-hook 'haskell-mode-hook 'imenu-add-menubar-index)  ;; imenu
+
+
+;; haskell-mode -- set f8 key binding to navigate to imports
+(eval-after-load 'haskell-mode
+  '(define-key haskell-mode-map [f8] 'haskell-navigate-imports))
+
+
+;; setting path for executables -- ghc-mod, hasktags, etc
+(let ((my-cabal-path (expand-file-name "~/Library/Haskell/bin")))
+   (add-to-list 'exec-path my-cabal-path))
+
+
+;; initialize ghc-mod each time you open a haskell file
+(autoload 'ghc-init "ghc" nil t)
+(autoload 'ghc-debug "ghc" nil t)
+(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+
+
+;; ---------------------------- emacs editor settings --------------------------------------
 ;; ----  see http://homepages.inf.ed.ac.uk/s0243221/emacs/
-;; -------------------------------------------------------                  
+;; -----------------------------------------------------------------------------------------
 ;; highlight current line
 (global-hl-line-mode 1)
+
 
 ;; set indent size
 (setq standard-indent 2)
 
+
 ;; line-by-line scrolling
 (setq scroll-step 1)
 
+
 ;; turn off tab character
 (setq-default indent-tabs-mode nil)
+
 
 ;; enable line & column numbering
 ;; see /u/ Noufal Ibrahim on line numbering
 ;; @ http://stackoverflow.com/questions/2034470/how-do-i-enable-line-numbers-on-the-left-everytime-i-open-emacs
 (global-linum-mode t)
 (column-number-mode 1)
+
 
 ;; enable fill column indicator
 ;; see http://www.emacswiki.org/emacs/FillColumnIndicator
@@ -80,22 +115,26 @@
 (add-hook 'after-change-major-mode-hook 'fci-mode)
 (setq fci-rule-column 92)   ;; marker @ column 92
 
+
 ;; turn off line wrapping
-;; see http://www.emacswiki.org/emacs/LineWrap
-;; see http://www.emacswiki.org/emacs/TruncateLines
+;; see http://www.emacswiki.org/emacs/LineWrap, http://www.emacswiki.org/emacs/TruncateLines
 (set-default 'truncate-lines t)
+
 
 ;; turn off end-of-buffer beep
 ;; see /u/ phils @ http://stackoverflow.com/questions/10545437/how-to-disable-the-beep-in-emacs-on-windows
 (setq visible-bell 1)
 
+
 ;; set up show-parenthesis mode
 (show-paren-mode 1)
+
 
 ;; imenu -- lists (only) top-level definitions -- defun, defvar, etc.
 ;; see M-x imenu usage @ http://camdez.com/blog/2013/11/28/emacs-rapid-buffer-navigation-with-imenu/
 ;; set up imenu to automatically rescan buffer contents to reflect new jump targets
 (setq imenu-auto-rescan t)
+
 
 ;; disable erase-buffer (as default)
 ;; to disable, replaced nil with t in the erase-buffer *enabling* code
@@ -103,12 +142,13 @@
 (put 'erase-buffer 'disabled t)
 
 
-;; ------------------ themes & faces ---------------------
-;; in this set up, we use the custom theme solarized-dark,
-;; with a bunch of manual face customizations
-;; -------------------------------------------------------
 
-;; ------- loading a custom-theme (solarized-dark, sanityinc-tomorrow-blue, etc.) -------
+;; --------------------------------- themes & faces ----------------------------------------
+;; in this set up, we use the custom theme solarized-dark, with a bunch of manual face
+;; customizations
+;; -----------------------------------------------------------------------------------------
+
+;; --------- loading a custom-theme (solarized-dark, sanityinc-tomorrow-blue, etc.) ---------
 ;; 1. check if the required custom theme package is listed in the my-packages variable
 ;;    (see above); if not, add the new custom theme package to the my-packages variable
 ;; 2. re-load init.el (through a emacs restart)
@@ -117,7 +157,7 @@
 ;; 5. get the exact name of the custom theme you want to load from that list
 ;; 6. see "how to load a custom theme from init.el" section for next steps
 
-;; ------------------- solarized tunings  ----------------
+;; ---------------------------------- solarized tunings ------------------------------------
 ;; for solarized, first we need a whole set of tunings (below) for good display;
 ;; these tunings should be set BEFORE loading solarized theme
 ;; see https://github.com/bbatsov/solarized-emacs
@@ -152,8 +192,9 @@
 
 ;; put the underline below font bottomline, instead of below baseline
 (setq x-underline-at-descent-line t)
+;; -----------------------------------------------------------------------------------------
 
-;; ------------------- how to load a custom theme from init.el  ----------------
+;; ----------------------- how to load a custom theme from init.el -------------------------
 ;; loading a custom color theme is tricky --
 ;; see issue from /u/ Ryan @ http://stackoverflow.com/questions/15555309/emacs-for-windows-error-loading-color-theme
 ;; see fix from /u/ Xinan @ http://emacs.stackexchange.com/questions/2797/emacs-wont-load-theme-on-startup
@@ -162,6 +203,7 @@
 ;;     is there in its place -- with the new custom theme
 ;; (c) save the init.el and restart emacs -- the new theme should now be in effect
 (add-hook 'after-init-hook (lambda () (load-theme 'solarized-dark t)))
+;; -----------------------------------------------------------------------------------------
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -169,8 +211,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
- '(custom-enabled-themes t)
+ '(custom-enabled-themes nil)  ;; nil resolved "wrong-type-argument listp t" error
  '(show-paren-mode t))
+
+
 
 ;; see /u/ Harvey, customizing fonts, @ http://emacs.stackexchange.com/questions/2501/how-can-i-set-default-font-in-emacs
 ;; 1. select some code, & type M-x customize-face RET default RET, choose white for
@@ -206,4 +250,4 @@
  '(font-lock-type-face ((t (:foreground "DeepSkyBlue1" :weight thin))))
  '(font-lock-variable-name-face ((t (:foreground "khaki"))))
  '(haskell-operator-face ((t (:foreground "DarkSeaGreen1")))))
-;; --------------------------------------------------------
+;; -----------------------------------------------------------------------------------------
