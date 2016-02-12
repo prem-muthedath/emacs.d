@@ -17,7 +17,8 @@
                       solarized-theme
                       color-theme-sanityinc-tomorrow  ;; see https://github.com/purcell/color-theme-sanityinc-tomorrow
                       haskell-mode
-                      ghc))  ;; ghc-mod -- see http://www.mew.org/~kazu/proj/ghc-mod/en/preparation.html
+                      ghc                             ;; ghc-mod -- see http://www.mew.org/~kazu/proj/ghc-mod/en/preparation.html
+                      flycheck-hdevtools))            ;; flycheck hdevtools
 
 
 ;; install packages
@@ -44,6 +45,7 @@
   (setq ls-lisp-use-insert-directory-program nil))
 
 
+
 ;; ------------------------------ emacs-lisp-mode settings ---------------------------------
 ;; set paredit mode 
 ;; syntax from @ https://github.com/camdez/emacs.d/blob/master/core/modes.el
@@ -56,30 +58,41 @@
 (add-hook 'emacs-lisp-mode-hook 'imenu-add-menubar-index)
 
 
+
 ;; ------------------------------ haskell-mode settings ------------------------------------
-;; see http://haskell.github.io/haskell-mode/manual/latest/Editing-Haskell-Code.html#Editing-Haskell-Code
+;; see http://haskell.github.io/haskell-mode/manual/latest/index.html#Top
 ;; see https://github.com/serras/emacs-haskell-tutorial/blob/master/tutorial.md
 ;; ghc-mod full details @ http://www.mew.org/~kazu/proj/ghc-mod/en/
 ;; ghc-mod emacs set-up @ http://www.mew.org/~kazu/proj/ghc-mod/en/preparation.html
 ;; -----------------------------------------------------------------------------------------
-(add-hook 'haskell-mode-hook 'paredit-mode)             ;; paredit
-(add-hook 'haskell-mode-hook 'imenu-add-menubar-index)  ;; imenu
-
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation) ;; turn on haskell indentation
 
 ;; haskell-mode -- set f8 key binding to navigate to imports
 (eval-after-load 'haskell-mode
   '(define-key haskell-mode-map [f8] 'haskell-navigate-imports))
 
+;; haskell-mode hoogle -- set C-c C-h key binding
+;; see https://wiki.haskell.org/Hoogle
+;; ghc-mod has hoogle as default, but i want hoogle in haskell-mode itself
+(eval-after-load 'haskell-mode
+  '(define-key haskell-mode-map (kbd "C-c C-h") 'haskell-hoogle))
+
+;; haskell-mode hayoo -- set C-C C-y binding
+(eval-after-load 'haskell-mode
+  '(define-key haskell-mode-map (kbd "C-c C-y") 'haskell-hayoo))
 
 ;; setting path for executables -- ghc-mod, hasktags, etc
 (let ((my-cabal-path (expand-file-name "~/Library/Haskell/bin")))
    (add-to-list 'exec-path my-cabal-path))
 
+;; enable flycheck-mode
+;;(global-flycheck-mode)
 
 ;; initialize ghc-mod each time you open a haskell file
 (autoload 'ghc-init "ghc" nil t)
 (autoload 'ghc-debug "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+
 
 
 ;; ---------------------------- emacs editor settings --------------------------------------
@@ -140,6 +153,27 @@
 ;; to disable, replaced nil with t in the erase-buffer *enabling* code
 ;; listed @ http://emacsredux.com/blog/2013/05/04/erase-buffer/
 (put 'erase-buffer 'disabled t)
+
+
+;; set the layout definition at startup
+;; first, either programmaticaly or manually (only once), inhibit the startup screen
+;; see http://stackoverflow.com/questions/744672/unable-to-hide-welcome-screen-in-emacs
+;; code from /u/ joshz; see exact manual steps from /u/ zack marrapese
+;; next, call my-start-up-layout (see below)
+;; see http://emacs.stackexchange.com/questions/822/how-to-setup-default-windows-at-startup
+;; code (i have modified a bit) from /u/ nsukami _ 
+(defun my-startup-layout ()
+  (interactive)
+  (setq inhibit-startup-screen t)   ;; inhibit welcome screen
+  (delete-other-windows)
+  (split-window-horizontally)       ;; -> |
+  (next-multiframe-window)
+  (dired (expand-file-name "~/software-development/code/haskell-stuff/."))
+  (next-multiframe-window)
+  (find-file "~/.emacs.d/init.el"))
+
+;; execute the layout, but only AFTER init!
+(add-hook 'after-init-hook (lambda () (my-startup-layout)))
 
 
 
@@ -210,10 +244,14 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ ;; for hoogle-imports, see:
+ ;; https://github.com/haskell/haskell-mode/wiki/Haskell-Interactive-Mode-Compiling#auto-adding-of-modules-to-import
  '(column-number-mode t)
- '(custom-enabled-themes nil)  ;; nil resolved "wrong-type-argument listp t" error
+ '(custom-enabled-themes nil)
+ '(haskell-process-suggest-hoogle-imports t)
+ '(inhibit-startup-screen nil)
  '(show-paren-mode t))
-
+  ;; see https://github.com/haskell/haskell-mode/wiki/Haskell-Interactive-Mode-Compiling#auto-adding-of-modules-to-import
 
 
 ;; see /u/ Harvey, customizing fonts, @ http://emacs.stackexchange.com/questions/2501/how-can-i-set-default-font-in-emacs
@@ -237,10 +275,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#002b36"
-                         :foreground "gray85" :inverse-video nil :box nil
-                         :strike-through nil :overline nil :underline nil
-                         :slant normal :weight thin :height 110
+ '(default ((t (:inherit nil :stipple nil :background "#002b36" :foreground "gray85"
+                         :inverse-video nil :box nil :strike-through nil :overline nil
+                         :underline nil :slant normal :weight thin :height 110
                          :width normal :foundry "nil" :family "Menlo"))))
  '(font-lock-comment-face ((t (:foreground "LightCyan4"))))
  '(font-lock-constant-face ((t (:foreground "#268bd2" :weight normal))))
@@ -249,5 +286,10 @@
  '(font-lock-string-face ((t (:foreground "forest green"))))
  '(font-lock-type-face ((t (:foreground "DeepSkyBlue1" :weight thin))))
  '(font-lock-variable-name-face ((t (:foreground "khaki"))))
- '(haskell-operator-face ((t (:foreground "DarkSeaGreen1")))))
+ '(ghc-face-error ((t (:box (:line-width 2 :color "brown1") :weight thin))))
+ '(ghc-face-hole ((t (:box (:line-width 2 :color "MediumOrchid1") :weight thin))))
+ '(ghc-face-warn ((t (:underline "yellow" :weight thin))))
+ '(haskell-error-face ((t (:box (:line-width 2 :color "brown1") :weight thin))))
+ '(haskell-operator-face ((t (:foreground "DarkSeaGreen1"))))
+ '(haskell-warning-face ((t (:underline "yellow" :weight thin)))))
 ;; -----------------------------------------------------------------------------------------
