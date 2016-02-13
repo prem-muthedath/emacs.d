@@ -64,12 +64,20 @@
 ;; see https://github.com/serras/emacs-haskell-tutorial/blob/master/tutorial.md
 ;; ghc-mod full details @ http://www.mew.org/~kazu/proj/ghc-mod/en/
 ;; ghc-mod emacs set-up @ http://www.mew.org/~kazu/proj/ghc-mod/en/preparation.html
+;; note -- no paredit for haskell-mode, as key bindings conflict with ghc-mod
 ;; -----------------------------------------------------------------------------------------
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation) ;; turn on haskell indentation
+;; setting path for executables -- ghc-mod, hoogle, etc
+(let ((my-cabal-path (expand-file-name "~/Library/Haskell/bin")))
+   (add-to-list 'exec-path my-cabal-path))
 
-;; haskell-mode -- set f8 key binding to navigate to imports
-(eval-after-load 'haskell-mode
-  '(define-key haskell-mode-map [f8] 'haskell-navigate-imports))
+;; initialize ghc-mod each time you open a haskell file
+;; enable flycheck-mode but ONLY for haskell-mode!
+;; note -- to enable flycheck-mode for ALL languages, use instead:
+;;   (add-hook 'after-init-hook #'global-flycheck-mode)
+;;   see http://www.flycheck.org/manual/latest/Quickstart.html#Quickstart
+(autoload 'ghc-init "ghc" nil t)
+(autoload 'ghc-debug "ghc" nil t)
+(add-hook 'haskell-mode-hook (lambda () (flycheck-mode) (ghc-init)))
 
 ;; haskell-mode hoogle -- set C-c C-h key binding
 ;; see https://wiki.haskell.org/Hoogle
@@ -78,20 +86,20 @@
   '(define-key haskell-mode-map (kbd "C-c C-h") 'haskell-hoogle))
 
 ;; haskell-mode hayoo -- set C-C C-y binding
+;; haskell-hoogle.el has haskell-hayoo function for hayoo search
 (eval-after-load 'haskell-mode
   '(define-key haskell-mode-map (kbd "C-c C-y") 'haskell-hayoo))
 
-;; setting path for executables -- ghc-mod, hasktags, etc
-(let ((my-cabal-path (expand-file-name "~/Library/Haskell/bin")))
-   (add-to-list 'exec-path my-cabal-path))
+;; turn on haskell indentation
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
-;; enable flycheck-mode
-;;(global-flycheck-mode)
+;; haskell-mode -- set f8 key binding to navigate to imports
+(eval-after-load 'haskell-mode
+  '(define-key haskell-mode-map [f8] 'haskell-navigate-imports))
 
-;; initialize ghc-mod each time you open a haskell file
-(autoload 'ghc-init "ghc" nil t)
-(autoload 'ghc-debug "ghc" nil t)
-(add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+;; add declaration scan using imenu
+;; see http://haskell.github.io/haskell-mode/manual/latest/Declaration-scanning.html#Declaration-scanning
+(add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
 
 
 
@@ -158,7 +166,7 @@
 ;; set the layout definition at startup
 ;; first, either programmaticaly or manually (only once), inhibit the startup screen
 ;; see http://stackoverflow.com/questions/744672/unable-to-hide-welcome-screen-in-emacs
-;; code from /u/ joshz; see exact manual steps from /u/ zack marrapese
+;; code from /u/ joshz; exact manual steps from /u/ zack marrapese
 ;; next, call my-start-up-layout (see below)
 ;; see http://emacs.stackexchange.com/questions/822/how-to-setup-default-windows-at-startup
 ;; code (i have modified a bit) from /u/ nsukami _ 
@@ -244,14 +252,14 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- ;; for hoogle-imports, see:
- ;; https://github.com/haskell/haskell-mode/wiki/Haskell-Interactive-Mode-Compiling#auto-adding-of-modules-to-import
  '(column-number-mode t)
  '(custom-enabled-themes nil)
  '(haskell-process-suggest-hoogle-imports t)
  '(inhibit-startup-screen nil)
  '(show-paren-mode t))
-  ;; see https://github.com/haskell/haskell-mode/wiki/Haskell-Interactive-Mode-Compiling#auto-adding-of-modules-to-import
+
+;; note -- for hhaskell-process-suggest-hoogle-imports (right above), see:
+;; https://github.com/haskell/haskell-mode/wiki/Haskell-Interactive-Mode-Compiling#auto-adding-of-modules-to-import
 
 
 ;; see /u/ Harvey, customizing fonts, @ http://emacs.stackexchange.com/questions/2501/how-can-i-set-default-font-in-emacs
@@ -279,6 +287,9 @@
                          :inverse-video nil :box nil :strike-through nil :overline nil
                          :underline nil :slant normal :weight thin :height 110
                          :width normal :foundry "nil" :family "Menlo"))))
+ '(flycheck-error ((t (:box (:line-width 2 :color "Red") :weight thin))))
+ '(flycheck-fringe-warning ((t (:background "#002b36" :foreground "yellow" :weight thin))))
+ '(flycheck-warning ((t (:underline "yellow" :weight thin))))
  '(font-lock-comment-face ((t (:foreground "LightCyan4"))))
  '(font-lock-constant-face ((t (:foreground "#268bd2" :weight normal))))
  '(font-lock-function-name-face ((t (:foreground "LightBlue3" :weight thin))))
@@ -286,10 +297,11 @@
  '(font-lock-string-face ((t (:foreground "forest green"))))
  '(font-lock-type-face ((t (:foreground "DeepSkyBlue1" :weight thin))))
  '(font-lock-variable-name-face ((t (:foreground "khaki"))))
- '(ghc-face-error ((t (:box (:line-width 2 :color "brown1") :weight thin))))
- '(ghc-face-hole ((t (:box (:line-width 2 :color "MediumOrchid1") :weight thin))))
+ '(ghc-face-error ((t (:box (:line-width 2 :color "Red") :weight thin))))
+ '(ghc-face-hole ((t (:box (:line-width 2 :color "Red") :weight thin))))
  '(ghc-face-warn ((t (:underline "yellow" :weight thin))))
- '(haskell-error-face ((t (:box (:line-width 2 :color "brown1") :weight thin))))
+ '(haskell-error-face ((t (:box (:line-width 2 :color "Red") :weight thin))))
+ '(haskell-hole-face ((t (:box (:line-width 2 :color "Red") :weight thin))))
  '(haskell-operator-face ((t (:foreground "DarkSeaGreen1"))))
  '(haskell-warning-face ((t (:underline "yellow" :weight thin)))))
 ;; -----------------------------------------------------------------------------------------
