@@ -79,9 +79,16 @@
 (autoload 'ghc-debug "ghc" nil t)
 (add-hook 'haskell-mode-hook (lambda () (flycheck-mode) (ghc-init)))
 
+;; bind haskell-compile to C-c C-o
+;; using C-c C-o, as ghc-mod uses C-c C-c
+;; ghc -Wall -ferror-spans -fforce-recomp -c
+;; see haskell-compile-command () in haskell-compile.el
+(eval-after-load "haskell-mode"
+  '(define-key haskell-mode-map (kbd "C-c C-o") 'haskell-compile))
+
 ;; haskell-mode hoogle -- set C-c C-h key binding
 ;; see https://wiki.haskell.org/Hoogle
-;; ghc-mod has hoogle as default, but i want hoogle in haskell-mode itself
+;; ghc-mod uses hoogle as default, but i want hoogle in haskell-mode itself
 (eval-after-load 'haskell-mode
   '(define-key haskell-mode-map (kbd "C-c C-h") 'haskell-hoogle))
 
@@ -98,8 +105,50 @@
   '(define-key haskell-mode-map [f8] 'haskell-navigate-imports))
 
 ;; add declaration scan using imenu
-;; see http://haskell.github.io/haskell-mode/manual/latest/Declaration-scanning.html#Declaration-scanning
+;; see "declaration scanning" section in haskell-mode manual
 (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
+
+;; enable which-function-mode
+;; see "declaration scanning" section in haskell-mode manual
+(eval-after-load "which-func"
+  '(add-to-list 'which-func-modes 'haskell-mode))
+
+;; enable speedbar support
+;; code incomplete in haskell-mode manual "declaration scanning" section
+;; code from /u/ janoChen @
+;; http://askubuntu.com/questions/23989/cant-see-php-files-in-emacs-speedbar
+(eval-after-load "speedbar" '(speedbar-add-supported-extension ".hs"))
+
+;; generate tags for top-level definitions
+;; see https://github.com/haskell/haskell-mode/wiki/Haskell-Interactive-Mode-Tags
+(eval-after-load 'haskell-mode
+  '(define-key haskell-mode-map (kbd "M-.") 'haskell-mode-tag-find))
+
+;; set haskell-mode alignment rules
+;; core code @ https://github.com/haskell/haskell-mode/wiki/Indentation#basic-indentation
+;; core code + binding to align command @
+;; https://github.com/PierreR/spacemacs/commit/1601aff8f893694f1cc2122d65217f072a2c87d6
+(with-eval-after-load 'align
+  (add-to-list 'align-rules-list
+             '(haskell-types
+               (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
+               (modes quote (haskell-mode literate-haskell-mode))))
+  (add-to-list 'align-rules-list
+             '(haskell-assignment
+               (regexp . "\\(\\s-+\\)=\\s-+")
+               (modes quote (haskell-mode literate-haskell-mode))))
+  (add-to-list 'align-rules-list
+             '(haskell-arrows
+               (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
+               (modes quote (haskell-mode literate-haskell-mode))))
+  (add-to-list 'align-rules-list
+             '(haskell-left-arrows
+               (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
+               (modes quote (haskell-mode literate-haskell-mode)))))
+
+;; for haskell-mode (only), bind align to M-[
+(eval-after-load 'haskell-mode
+  '(define-key haskell-mode-map (kbd "M-[") 'align))
 
 
 
@@ -177,11 +226,19 @@
   (split-window-horizontally)       ;; -> |
   (next-multiframe-window)
   (dired (expand-file-name "~/software-development/code/haskell-stuff/."))
+  (split-window-vertically)
+  (next-multiframe-window)
+  (find-file "*Messages*")
   (next-multiframe-window)
   (find-file "~/.emacs.d/init.el"))
 
 ;; execute the layout, but only AFTER init!
 (add-hook 'after-init-hook (lambda () (my-startup-layout)))
+
+
+;; text alignment -- bind align-regexp to C-x a r
+;; see https://github.com/haskell/haskell-mode/wiki/Indentation#aligning-code
+(global-set-key (kbd "C-x a r") 'align-regexp)
 
 
 
@@ -254,12 +311,9 @@
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(custom-enabled-themes nil)
- '(haskell-process-suggest-hoogle-imports t)
+ '(haskell-tags-on-save t)
  '(inhibit-startup-screen nil)
  '(show-paren-mode t))
-
-;; note -- for hhaskell-process-suggest-hoogle-imports (right above), see:
-;; https://github.com/haskell/haskell-mode/wiki/Haskell-Interactive-Mode-Compiling#auto-adding-of-modules-to-import
 
 
 ;; see /u/ Harvey, customizing fonts, @ http://emacs.stackexchange.com/questions/2501/how-can-i-set-default-font-in-emacs
