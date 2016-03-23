@@ -27,10 +27,10 @@
                       exec-path-from-shell
                       solarized-theme
                       color-theme-sanityinc-tomorrow
-                      haskell-mode
+                      zenburn-theme
                       ghc
-                      flycheck-hdevtools
-                      zenburn-theme))
+                      haskell-mode
+                      flycheck-hdevtools))
 
 
 ;; install packages
