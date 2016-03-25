@@ -4,6 +4,10 @@
 ;; ------------------------------- packages & environment ----------------------------------
 (setq debug-on-error t)  ;; debug on error
 
+;; set emacs load path
+;; see https://www.gnu.org/software/emacs/manual/html_node/eintr/Loading-Files.html
+;; see https://github.com/camdez/emacs.d/blob/master/init.el
+(add-to-list 'load-path "~/.emacs.d/lisp")
 
 ;; first, initialize all packages from MELPA stable
 ;; see "how to install packages using ELPA, MELPA"
@@ -266,7 +270,7 @@
 
 
 ;; --------------------------------- themes & faces ----------------------------------------
-;; in this set up, we use the custom theme solarized-dark, with a bunch of manual face
+;; in this set up, we load a custom theme, with perhaps a bunch of manual face
 ;; customizations
 ;; -----------------------------------------------------------------------------------------
 
@@ -279,52 +283,48 @@
 ;; 5. get the exact name of the custom theme you want to load from that list
 ;; 6. see "how to load a custom theme from init.el" section for next steps
 
-;; ---------------------------------- solarized tunings ------------------------------------
-;; for solarized, first we need a whole set of tunings (below) for good display;
-;; these tunings should be set BEFORE loading solarized theme
-;; see https://github.com/bbatsov/solarized-emacs
-
-;; make the fringe stand out from the background
-(setq solarized-distinct-fringe-background t)
-
-;; don't change the font for some headings and titles
-(setq solarized-use-variable-pitch nil)
-
-;; make the modeline high contrast
-(setq solarized-high-contrast-mode-line t)
-
-;; use less bolding
-(setq solarized-use-less-bold t)
-
-;; use more italics
-(setq solarized-use-more-italic t)
-
-;; use less colors for indicators such as git:gutter, flycheck and similar
-(setq solarized-emphasize-indicators nil)
-
-;; don't change size of org-mode headlines (but keep other size-changes)
-(setq solarized-scale-org-headlines nil)
-
-;; avoid all font-size changes
-(setq solarized-height-minus-1 1)
-(setq solarized-height-plus-1 1)
-(setq solarized-height-plus-2 1)
-(setq solarized-height-plus-3 1)
-(setq solarized-height-plus-4 1)
-
-;; put the underline below font bottomline, instead of below baseline
-(setq x-underline-at-descent-line t)
-;; -----------------------------------------------------------------------------------------
-
 ;; ----------------------- how to load a custom theme from init.el -------------------------
 ;; loading a custom color theme is tricky --
 ;; see issue from /u/ Ryan @ http://stackoverflow.com/questions/15555309/emacs-for-windows-error-loading-color-theme
 ;; see fix from /u/ Xinan @ http://emacs.stackexchange.com/questions/2797/emacs-wont-load-theme-on-startup
-;; (a) if it doesn't exist already, add the below line of code to init.el
-;; (b) in that line of code, replace the existing theme -- solarized-dark or whatever theme
-;;     is there in its place -- with the new custom theme
-;; (c) save the init.el and restart emacs -- the new theme should now be in effect
-(add-hook 'after-init-hook (lambda () (load-theme 'solarized-dark t)))
+;; (a) to be modular, over here, we create a seperate theme file for each custom theme
+;; (b) each theme file has code to load the custom theme + any manual face customizations
+;; (c) if it doesn't exist already, add the below line of code to your theme file:
+
+;;      (add-hook 'after-init-hook (lambda () (load-theme 'solarized-dark t)))
+
+;; (d) in that line of code, replace the existing theme -- solarized-dark or whatever theme
+;;     is there in its place -- with the your custom theme
+;; (e) next, ensure you have the following line of code in init.el to load your theme file.
+
+;;       (load "your-theme-file-name")
+
+;; (f) in that line of code, replace the existing theme file name with your theme file name
+;; (g) save the theme file & init.el; restart emacs -- the new theme should now be in effect
+;; -----------------------------------------------------------------------------------------
+
+(load "prem-solarized-dark")
+
+
+;; ---------------------- face customizations -- general guidelines -----------------------
+;; face customizations done through custom-set-faces, usually in the theme file
+
+ ;; see /u/ Harvey, customizing fonts, @ http://emacs.stackexchange.com/questions/2501/how-can-i-set-default-font-in-emacs
+ ;; 1. select some code, & type M-x customize-face RET default RET, choose white for
+ ;;    foreground color, & click "apply all changes" -> makes general font white
+ ;; 2. select some comment, type M-x customize-face RET & choose forground color
+ ;;    "light slate grey" & click "apply all changes" -> makes comments "light slate grey"
+ ;; 3. you could do 1 & 2 in an another way as well: select some code, then
+ ;;    M-x customize-face RET RET, & then choose foreground colors for default font,
+ ;;    font-lock-comment-face, & anything else you wish; then click "apply all changes"
+ ;;    button at the top
+ ;; 4. or if you M-x customize-face RET TAB, emacs will list (in another buffer) all items
+ ;;    -- such as font-lock-comment-face, font-lock-function-name, etc -- you can modify.
+ ;;    you can click on an item and then hit RET, which will put you on a screen where you
+ ;;    can edit & save the item you clicked
+ ;; 5. choose highlight line (hl-line) color as follows:
+ ;;    M-x customize-face RET hl-line, pick a color, & apply all changes
+ ;;    see /u/ juanleon @ http://stackoverflow.com/questions/17701576/changing-highlight-line-color-in-emacs
 ;; -----------------------------------------------------------------------------------------
 
 
@@ -381,50 +381,5 @@
                 face mode-line-emphasis)
    "]"))
 
-
- ;; see /u/ Harvey, customizing fonts, @ http://emacs.stackexchange.com/questions/2501/how-can-i-set-default-font-in-emacs
- ;; 1. select some code, & type M-x customize-face RET default RET, choose white for
- ;;    foreground color, & click "apply all changes" -> makes general font white
- ;; 2. select some comment, type M-x customize-face RET & choose forground color
- ;;    "light slate grey" & click "apply all changes" -> makes comments "light slate grey"
- ;; 3. you could do 1 & 2 in an another way as well: select some code, then
- ;;    M-x customize-face RET RET, & then choose foreground colors for default font,
- ;;    font-lock-comment-face, & anything else you wish; then click "apply all changes"
- ;;    button at the top
- ;; 4. or if you M-x customize-face RET TAB, emacs will list (in another buffer) all items
- ;;    -- such as font-lock-comment-face, font-lock-function-name, etc -- you can modify.
- ;;    you can click on an item and then hit RET, which will put you on a screen where you
- ;;    can edit & save the item you clicked
- ;; 5. choose highlight line (hl-line) color as follows:
- ;;    M-x customize-face RET hl-line, pick a color, & apply all changes
- ;;    see /u/ juanleon @ http://stackoverflow.com/questions/17701576/changing-highlight-line-color-in-emacs
-
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#002b36" :foreground "gray85"
-                         :inverse-video nil :box nil :strike-through nil :overline nil
-                         :underline nil :slant normal :weight thin :height 110
-                         :width normal :foundry "nil" :family "Menlo"))))
- '(flycheck-error ((t (:box (:line-width 2 :color "Red") :weight thin))))
- '(flycheck-fringe-warning ((t (:background "#002b36" :foreground "yellow" :weight thin))))
- '(flycheck-warning ((t (:underline "yellow" :weight thin))))
- '(font-lock-comment-face ((t (:foreground "LightCyan4"))))
- '(font-lock-constant-face ((t (:foreground "#268bd2" :weight normal))))
- '(font-lock-function-name-face ((t (:foreground "LightBlue3" :weight thin))))
- '(font-lock-keyword-face ((t (:foreground "green1"))))
- '(font-lock-string-face ((t (:foreground "forest green"))))
- '(font-lock-type-face ((t (:foreground "DeepSkyBlue1" :weight thin))))
- '(font-lock-variable-name-face ((t (:foreground "khaki"))))
- '(ghc-face-error ((t (:box (:line-width 2 :color "Red") :weight thin))))
- '(ghc-face-hole ((t (:box (:line-width 2 :color "Red") :weight thin))))
- '(ghc-face-warn ((t (:underline "yellow" :weight thin))))
- '(haskell-error-face ((t (:box (:line-width 2 :color "Red") :weight thin))))
- '(haskell-hole-face ((t (:box (:line-width 2 :color "Red") :weight thin))))
- '(haskell-operator-face ((t (:foreground "DarkSeaGreen1"))))
- '(haskell-warning-face ((t (:underline "yellow" :weight thin)))))
 ;; -----------------------------------------------------------------------------------------
 

@@ -1,6 +1,8 @@
 # emacs .gitignore file
-# ignore everything EXCEPT init.el, themes.el, lisp/*.el, and README.md
+# ignore everything -- denoted by /* -- EXCEPT init.el, themes.el, lisp/*.el, and README.md
+# ignore all files with extension el~
 /*
+*.el~
 !/init.el
 !/themes.el
 !/lisp/*.el
