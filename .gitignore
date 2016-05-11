@@ -4,6 +4,5 @@
 /*
 *.el~
 !/init.el
-!/themes.el
 !/lisp/*.el
 !/README.md
