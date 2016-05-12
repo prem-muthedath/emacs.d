@@ -50,23 +50,25 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#002b36" :foreground "gray85"
+ '(default ((t (:inherit nil :stipple nil :background "#002b36" :foreground "WhiteSmoke"
                          :inverse-video nil :box nil :strike-through nil :overline nil
                          :underline nil :slant normal :weight thin :height 110
                          :width normal :foundry "nil" :family "Menlo"))))
  '(flycheck-error ((t (:box (:line-width 2 :color "Red") :weight thin))))
  '(flycheck-fringe-warning ((t (:background "#002b36" :foreground "yellow" :weight thin))))
  '(flycheck-warning ((t (:underline "yellow" :weight thin))))
- '(font-lock-comment-face ((t (:foreground "LightCyan4"))))
+ '(font-lock-comment-face ((t (:foreground "chocolate2"))))
+ '(font-lock-comment-delimiter-face ((t (:foreground "chocolate2"))))
  '(font-lock-constant-face ((t (:foreground "#268bd2" :weight normal))))
  '(font-lock-function-name-face ((t (:foreground "LightBlue3" :weight thin))))
  '(font-lock-keyword-face ((t (:foreground "green1"))))
- '(font-lock-string-face ((t (:foreground "forest green"))))
+ '(font-lock-string-face ((t (:foreground "turquoise"))))
  '(font-lock-type-face ((t (:foreground "DeepSkyBlue1" :weight thin))))
  '(font-lock-variable-name-face ((t (:foreground "khaki"))))
  '(ghc-face-error ((t (:box (:line-width 2 :color "Red") :weight thin))))
  '(ghc-face-hole ((t (:box (:line-width 2 :color "Red") :weight thin))))
  '(ghc-face-warn ((t (:underline "yellow" :weight thin))))
+ '(haskell-pragma-face ((t (:foreground "DeepSkyBlue1" :weight thin))))
  '(haskell-error-face ((t (:box (:line-width 2 :color "Red") :weight thin))))
  '(haskell-hole-face ((t (:box (:line-width 2 :color "Red") :weight thin))))
  '(haskell-operator-face ((t (:foreground "DarkSeaGreen1"))))
