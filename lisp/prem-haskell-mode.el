@@ -14,10 +14,18 @@
 ;; NOTE -- to enable flycheck-mode for ALL languages, use instead:
 ;;   (add-hook 'after-init-hook #'global-flycheck-mode)
 ;;   see http://www.flycheck.org/manual/latest/Quickstart.html#Quickstart
-(autoload 'ghc-init "ghc" nil t)
-(autoload 'ghc-debug "ghc" nil t)
-(add-hook 'haskell-mode-hook (lambda () (flycheck-mode) (ghc-init)))
+;; (autoload 'ghc-init "ghc" nil t)
+;; (autoload 'ghc-debug "ghc" nil t)
+;; (add-hook 'haskell-mode-hook (lambda () (flycheck-mode) (ghc-init)))
 
+;; CHANGE OF HEART!
+;; ghc-mod, in my experience, is crap -- it doesn't work most of the time, 
+;; and even when it does work, it is erratic at best
+;; so for now, we must skip ghc-mod, but we'll add flycheck and flycheck-haskell
+;; code source for flycheck-haskell: https://blog.urbanslug.com/posts/2015-04-13-Emacs-setup-for-haskell.html
+(add-hook 'haskell-mode-hook (lambda () (flycheck-mode)))
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
 ;; turn on haskell indentation
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)

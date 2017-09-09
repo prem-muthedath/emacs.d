@@ -4,7 +4,6 @@
 ;; ------------------------------- packages & environment ----------------------------------
 (setq debug-on-error t)  ;; debug on error
 
-
 ;; add load path for emacs
 ;; see https://www.gnu.org/software/emacs/manual/html_node/eintr/Loading-Files.html
 ;; see https://github.com/camdez/emacs.d/blob/master/init.el
@@ -147,7 +146,7 @@
   (split-window-horizontally)       ;; -> |
   (find-file "~/.emacs.d/init.el")
   (next-multiframe-window)
-  (find-file (expand-file-name "~/software-development/code/haskell-stuff/ghc-mod-test.hs"))
+  (find-file (expand-file-name "~/software-development/code/patience-diff/patience-diff.hs"))
   (split-window-vertically)
   (next-multiframe-window)
   (switch-to-buffer (list-buffers-noselect)))  ;; buffer list window
