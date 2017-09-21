@@ -2,7 +2,16 @@
 ;; this file contains tunings and custom-set-faces for solarized-dark theme
 ;;
 ;; ---------------------------------- solarized tunings ------------------------------------
-;; for solarized, first we need a whole set of tunings (below) for good display;
+;; for solarized, first we need a some of tunings (below) for good display;
+
+;; NOTE:
+;; we had a lot more tunings in the previous edition, when i had a whole
+;; bunch of face customizations in custom-set-faces.
+
+;; BUT now i have decided to go with solarized-dark out-of-the-box, except
+;; for the default font.  with this change (in this file), i have also eliminated
+;  most of the previous tunings, because they didn't offer much.
+
 ;; these tunings should be set BEFORE loading solarized theme
 ;; see https://github.com/bbatsov/solarized-emacs
 
@@ -12,27 +21,8 @@
 ;; don't change the font for some headings and titles
 (setq solarized-use-variable-pitch nil)
 
-;; make the modeline high contrast
-(setq solarized-high-contrast-mode-line t)
-
 ;; use less bolding
 (setq solarized-use-less-bold t)
-
-;; use more italics
-(setq solarized-use-more-italic t)
-
-;; use less colors for indicators such as git:gutter, flycheck and similar
-(setq solarized-emphasize-indicators nil)
-
-;; don't change size of org-mode headlines (but keep other size-changes)
-(setq solarized-scale-org-headlines nil)
-
-;; avoid all font-size changes
-(setq solarized-height-minus-1 1)
-(setq solarized-height-plus-1 1)
-(setq solarized-height-plus-2 1)
-(setq solarized-height-plus-3 1)
-(setq solarized-height-plus-4 1)
 
 ;; put the underline below font bottomline, instead of below baseline
 (setq x-underline-at-descent-line t)
@@ -45,31 +35,8 @@
 (add-hook 'after-init-hook (lambda () (load-theme 'solarized-dark t)))
 ;; -----------------------------------------------------------------------------------------
 
+;; i have decided to go with solarized-dark pretty much out-of-the-box
+;; i have changed only the default font to Courier
+;; i have eliminated all of the previous custom face settings
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#002b36" :foreground "grey80"
-                         :inverse-video nil :box nil :strike-through nil :overline nil
-                         :underline nil :slant normal :weight thin :height 160
-                         :width normal :foundry "nil" :family "Courier"))))
- '(flycheck-error ((t (:box (:line-width 2 :color "Red") :weight thin))))
- '(flycheck-fringe-warning ((t (:background "#002b36" :foreground "yellow" :weight thin))))
- '(flycheck-warning ((t (:underline "yellow" :weight thin))))
- '(font-lock-comment-face ((t (:foreground "#2aa198" :slant italic))))
- '(font-lock-comment-delimiter-face ((t (:foreground "#2aa198" :slant italic))))
- '(font-lock-constant-face ((t (:foreground "#268bd2" :weight normal))))
- '(font-lock-function-name-face ((t (:foreground "LightBlue3" :weight thin))))
- '(font-lock-keyword-face ((t (:foreground "LimeGreen" :weight thin))))
- '(font-lock-string-face ((t (:foreground "turquoise"))))
- '(font-lock-type-face ((t (:foreground "DeepSkyBlue1"))))
- '(font-lock-variable-name-face ((t (:foreground "khaki"))))
- '(ghc-face-error ((t (:box (:line-width 2 :color "Red") :weight thin))))
- '(ghc-face-hole ((t (:box (:line-width 2 :color "Red") :weight thin))))
- '(ghc-face-warn ((t (:underline "yellow" :weight thin))))
- '(haskell-pragma-face ((t (:foreground "DeepSkyBlue1" :weight thin))))
- '(haskell-error-face ((t (:box (:line-width 2 :color "Red") :weight thin))))
- '(haskell-hole-face ((t (:box (:line-width 2 :color "Red") :weight thin))))
- '(haskell-operator-face ((t (:foreground "HotPink3" :weight thin))))
- '(haskell-warning-face ((t (:underline "yellow" :weight thin)))))
+   '(default ((t (:family "Courier")))))

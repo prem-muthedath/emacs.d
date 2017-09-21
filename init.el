@@ -34,10 +34,14 @@
                       exec-path-from-shell
                       solarized-theme
                       color-theme-sanityinc-tomorrow
+                      color-theme-sanityinc-solarized
                       zenburn-theme
-                      ghc
                       haskell-mode
-                      flycheck-hdevtools))
+                      flycheck
+                      flycheck-haskell
+                      flycheck-hdevtools         ;; note: no longer use flycheck-hdevtools
+                      ghc                        ;; note: no longer use ghc-mod
+                      ))
 
 
 ;; install packages
@@ -110,8 +114,10 @@
 
 
 ;; set up show-parenthesis mode
+;; see http://emacs-fu.blogspot.in/2009/01/balancing-your-parentheses.html
+(setq show-paren-delay 0)
 (show-paren-mode 1)
-;;(setq show-paren-style 'expression)
+(setq show-paren-style 'expression)
 
 ;; imenu -- lists (only) top-level definitions -- defun, defvar, etc.
 ;; see M-x imenu usage @ http://camdez.com/blog/2013/11/28/emacs-rapid-buffer-navigation-with-imenu/
@@ -253,6 +259,6 @@
 ;;
 ;;          (load "which-func-mode-line-display")
 
-(load "which-func-mode-line-display")
+;; (load "which-func-mode-line-display")
 ;; -----------------------------------------------------------------------------------------
 
