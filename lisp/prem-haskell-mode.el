@@ -1,84 +1,81 @@
 ;; ---------------------------- prem's haskell-mode settings -------------------------------
 ;; see http://haskell.github.io/haskell-mode/manual/latest/index.html#Top
 ;; see https://github.com/serras/emacs-haskell-tutorial/blob/master/tutorial.md
-;; ghc-mod full details @ http://www.mew.org/~kazu/proj/ghc-mod/en/
-;; ghc-mod emacs set-up @ http://www.mew.org/~kazu/proj/ghc-mod/en/preparation.html
-;; note -- no paredit for haskell-mode, as key bindings conflict with ghc-mod
+;;
+;; for basic sandbox usage (for installing binaries like hasktags, etc), see
+;; http://bob.ippoli.to/archives/2013/01/11/getting-started-with-haskell/
+;;
+;; note -- not using paredit for haskell-mode, as key bindings had conflicts with ghc-mod
 ;; -----------------------------------------------------------------------------------------
 ;; setting path for executables -- cabal, ghc-mod, hdevtools, hoogle, etc
-;; NOTE: not needed at the moment, as ~/Library/Haskell/bin is on PATH
+;; NOTE: not needed at the moment, as ~/.local/bin and ~/.cabal/bin are on PATH
 
-
-;; initialize ghc-mod each time you open a haskell file
-;; enable flycheck-mode but ONLY for haskell-mode!
-;; NOTE -- to enable flycheck-mode for ALL languages, use instead:
-;;   (add-hook 'after-init-hook #'global-flycheck-mode)
-;;   see http://www.flycheck.org/manual/latest/Quickstart.html#Quickstart
-;; (autoload 'ghc-init "ghc" nil t)
-;; (autoload 'ghc-debug "ghc" nil t)
-;; (add-hook 'haskell-mode-hook (lambda () (flycheck-mode) (ghc-init)))
 
 ;; CHANGE OF HEART!
 ;; ghc-mod, in my experience, is crap -- it doesn't work most of the time, 
 ;; and even when it does work, it is erratic at best
-;; so for now, we must skip ghc-mod, but we'll add flycheck and flycheck-haskell
-;; code source for flycheck-haskell: https://blog.urbanslug.com/posts/2015-04-13-Emacs-setup-for-haskell.html
-(add-hook 'haskell-mode-hook (lambda () (flycheck-mode)))
+;; if you wish to use ghc-mod in future, you should:
+;;    - initialize ghc-mod each time you open a haskell file:
+;;          (autoload 'ghc-init "ghc" nil t)
+;;          (autoload 'ghc-debug "ghc" nil t)
+;;    - add ghc-init to haskell-mode-hook:
+;;          (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+;;
+;; for now, we must skip ghc-mod, but we'll add flycheck and flycheck-haskell
+
+(require 'haskell-interactive-mode)
+(require 'haskell-process)
+(add-hook 'haskell-mode-hook
+          (lambda ()
+            ;; enable flycheck-mode but ONLY for haskell-mode!
+            ;; NOTE -- to enable flycheck-mode for ALL languages, use instead:
+            ;;   (add-hook 'after-init-hook #'global-flycheck-mode)
+            ;;   see http://www.flycheck.org/manual/latest/Quickstart.html#Quickstart           
+            (flycheck-mode)
+            (interactive-haskell-mode)
+            (turn-on-haskell-indentation)
+            ;; declaration scan using imenu; see haskell-mode manual
+            (haskell-decl-scan-mode)))
+
+
+(eval-after-load "haskell-mode"
+  '(progn
+     (define-key haskell-mode-map (kbd "C-c C-l") 'haskell-process-load-or-reload)
+     (define-key haskell-mode-map (kbd "C-`") 'haskell-interactive-bring)
+     (define-key haskell-mode-map (kbd "C-c C-t") 'haskell-process-do-type)
+     (define-key haskell-mode-map (kbd "C-c C-i") 'haskell-process-do-info)
+     (define-key haskell-mode-map (kbd "C-c C-c") 'haskell-process-cabal-build)
+     (define-key haskell-mode-map (kbd "C-c C-k") 'haskell-interactive-mode-clear)
+     (define-key haskell-mode-map (kbd "C-c c") 'haskell-process-cabal)
+     ;; ghc -Wall -ferror-spans -fforce-recomp -c
+     ;; see haskell-compile-command () in haskell-compile.el
+     (define-key haskell-mode-map (kbd "C-c h c") 'haskell-compile)
+     (define-key haskell-mode-map (kbd "C-c C-h") 'haskell-hoogle)
+     ;; haskell-hoogle.el has haskell-hayoo function for hayoo search
+     (define-key haskell-mode-map (kbd "C-c C-y") 'haskell-hayoo)
+     (define-key haskell-mode-map [f8] 'haskell-navigate-imports)
+     ;; generate tags for top-level definitions -- see haskell-mode manual
+     (define-key haskell-mode-map (kbd "M-.") 'haskell-mode-jump-to-def-or-tag)
+     ;; for haskell-mode (only), bind align to M-[
+     (define-key haskell-mode-map (kbd "M-[") 'align)))
+
+
+;; code source for flycheck-haskell:
+;; https://blog.urbanslug.com/posts/2015-04-13-Emacs-setup-for-haskell.html
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))
 
-;; turn on haskell indentation
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 
-
-;; add declaration scan using imenu
-;; see "declaration scanning" section in haskell-mode manual
-(add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
-
-
-;; enable speedbar support
-;; code incomplete in haskell-mode manual "declaration scanning" section
-;; code from /u/ janoChen @
-;; http://askubuntu.com/questions/23989/cant-see-php-files-in-emacs-speedbar
-(eval-after-load "speedbar" '(speedbar-add-supported-extension ".hs"))
-
-
-;; bind (haskell-mode) haskell-compile to C-c C-o
-;; using C-c C-o, as ghc-mod uses C-c C-c
-;; ghc -Wall -ferror-spans -fforce-recomp -c
-;; see haskell-compile-command () in haskell-compile.el
-(eval-after-load "haskell-mode"
-  '(define-key haskell-mode-map (kbd "C-c C-o") 'haskell-compile))
-
-
-;; haskell-mode hoogle -- set C-c C-h key binding
-;; see https://wiki.haskell.org/Hoogle
-;; ghc-mod uses hoogle as default, but i want hoogle in haskell-mode itself
-(eval-after-load 'haskell-mode
-  '(define-key haskell-mode-map (kbd "C-c C-h") 'haskell-hoogle))
-
-
-;; haskell-mode hayoo -- set C-C C-y binding
-;; haskell-hoogle.el has haskell-hayoo function for hayoo search
-(eval-after-load 'haskell-mode
-  '(define-key haskell-mode-map (kbd "C-c C-y") 'haskell-hayoo))
-
-
-;; haskell-mode -- set f8 key binding to navigate to imports
-(eval-after-load 'haskell-mode
-  '(define-key haskell-mode-map [f8] 'haskell-navigate-imports))
-
-
-;; generate tags for top-level definitions
-;; see https://github.com/haskell/haskell-mode/wiki/Haskell-Interactive-Mode-Tags
-(eval-after-load 'haskell-mode
-  '(define-key haskell-mode-map (kbd "M-.") 'haskell-mode-tag-find))
+;; basic code from /u/ mark @ https://goo.gl/6oK2DQ (stackoverflow)
+;; slightly modified to have same structure as flycheck-haskell-setup code above
+(eval-after-load 'interactive-haskell-mode
+  (add-hook 'interactive-haskell-mode-hook
+            (lambda ()  (define-key (current-local-map) (kbd "<tab>") 'dabbrev-expand))))
 
 
 ;; set haskell-mode alignment rules
 ;; core code @ https://github.com/haskell/haskell-mode/wiki/Indentation#basic-indentation
-;; core code + binding to align command @
-;; https://github.com/PierreR/spacemacs/commit/1601aff8f893694f1cc2122d65217f072a2c87d6
+;; core code + binding to align command @ https://goo.gl/s39tMB (PierreR github) 
 (with-eval-after-load 'align
   (add-to-list 'align-rules-list
              '(haskell-types
@@ -96,9 +93,5 @@
              '(haskell-left-arrows
                (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
                (modes quote (haskell-mode literate-haskell-mode)))))
-
-;; for haskell-mode (only), bind align to M-[
-(eval-after-load 'haskell-mode
-  '(define-key haskell-mode-map (kbd "M-[") 'align))
 
 ;; -----------------------------------------------------------------------------------------

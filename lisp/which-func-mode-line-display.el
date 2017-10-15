@@ -19,13 +19,13 @@
 ;; -- this makes mode-line items clearly visible when mode-line is active or inactive
 ;;
 ;; -- references -- ckeck out these links to understand how to customize mode-line
-;; --   customizing mode-line -- http://emacs-fu.blogspot.in/2011/08/customizing-mode-line.html
-;; --   customizing mode-line -- http://amitp.blogspot.in/2011/08/emacs-custom-mode-line.html
-;; --   which-func.el -- http://web.mit.edu/Emacs/source/emacs-23.1/lisp/progmodes/which-func.el
-;; --   customizing which-func-format -- http://www.lunaryorn.com/2014/09/13/boosting-which-func-mode.html
-;; --   current buffer -- https://www.gnu.org/software/emacs/manual/html_node/elisp/Current-Buffer.html
-;; --   buffer for selected-window -- /u/ Francesco
-;; --   @ http://emacs.stackexchange.com/questions/2959/how-to-know-my-buffers-visible-focused-status
+;; --   customizing mode-line -- https://goo.gl/VzhzsD (emacs.fu)
+;; --   customizing mode-line -- https://goo.gl/4QXH38 (amitp)
+;; --   which-func.el -- https://goo.gl/KBKVx1 (web.mit)
+;; --   customizing which-func-format -- https://goo.gl/rEsX78 (lunaryorn.com)
+;; --   current buffer -- https://goo.gl/NWqgsB (gnu.org)
+;; --   buffer for selected-window -- /u/ Francesco @
+;; --   https://goo.gl/6rgAoq (emacs.stackexchange)
 ;;
 ;; solution: original which-func-format, with just face set to mode-line-emphasis (BEST)
 ;; --    simple: reuses most of the original which-func-format that uses :propertize

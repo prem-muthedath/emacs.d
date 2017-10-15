@@ -1,5 +1,6 @@
 ;; ****************************** prem's emacs.d/init.el ************************************
-;; for an example of a well-organized emacs set up, see https://github.com/camdez/emacs.d
+;; for an example of a well-organized emacs set up,
+;; see https://github.com/camdez/emacs.d
 ;;
 ;; ------------------------------- packages & environment ----------------------------------
 (setq debug-on-error t)  ;; debug on error
@@ -20,28 +21,37 @@
 
 
 ;; load packages (in init)
-;; package-initialize also fills list of installed packages, used by package-installed-p
-;; so /u/ lunaryom says -- call package-initialize before package-installed-p
-;; see http://stackoverflow.com/questions/26116882/error-package-el-not-yet-initialized
+;;
+;; NOTE:
+;; emacs automatically calls package-initialize (whether or not it is in init.el),
+;; but only AFTER first loading init.el. but if init.el itself contains code
+;; that depends on a call to package-initialize, then you have to EXPLICITLY call
+;; package-initialize in init.el.
+;;
+;; we've such a case here, as the code below for installing packages uses
+;; package-installed-p, which uses a list of installed packages that
+;; package-initialize fills.
+;;
+;; /u/ lunaryom @ https://goo.gl/VPt9z6 (stackoverflow) says package-initialize also fills
+;; list of installed packages used by package-installed-p, so call package-initialize
+;; before package-installed-p
+;;
+;; for an excellent explanation, see also /u/ tarsius @ goo.gl/MKNBCB (emacs.stackexchange)
+;;
 (package-initialize)
 
 
 ;; list packages for installation
 ;; see https://github.com/purcell/color-theme-sanityinc-tomorrow
-;; ghc-mod -- see http://www.mew.org/~kazu/proj/ghc-mod/en/preparation.html
-;; flycheck hdevtools
 (defvar my-packages '(paredit
                       exec-path-from-shell
-                      solarized-theme
-                      color-theme-sanityinc-tomorrow
-                      color-theme-sanityinc-solarized
-                      zenburn-theme
                       haskell-mode
                       flycheck
                       flycheck-haskell
-                      flycheck-hdevtools         ;; note: no longer use flycheck-hdevtools
-                      ghc                        ;; note: no longer use ghc-mod
-                      ))
+                      solarized-theme
+                      color-theme-sanityinc-solarized
+                      color-theme-sanityinc-tomorrow
+                      zenburn-theme))
 
 
 ;; install packages
@@ -57,7 +67,7 @@
 
 
 ;; fix for "ls does not --dired" OS X error, seen while building imenu index (see below)
-;; from /u/ crippledlambda @ http://stackoverflow.com/questions/4076360/error-in-dired-sorting-on-os-x
+;; from /u/ crippledlambda @ https://goo.gl/GE8Y2v (stackoverflow)
 (when (eq system-type 'darwin)
   (require 'ls-lisp)
   (setq ls-lisp-use-insert-directory-program nil))
@@ -84,6 +94,30 @@
 (global-hl-line-mode 1)
 
 
+;; add current column highlighter
+;; col-highlight.el is in load-path
+;; see https://www.emacswiki.org/emacs/download/col-highlight.el
+
+(require 'col-highlight)
+
+;; PREM hack -- added below piece of code in solarized.el
+;; below code sets column highlight face -- the same face solarized.el sets for hl-line
+
+;;;;; PREM: ADDED COLUMN HIGHLIGHT FACE
+;;;;; column-highlight-mode
+;;     `(col-highlight ((,class (:background ,base02))))
+;;     `(col-highlight-face ((,class (:background ,base02))))
+
+;; use M-x column-highlight-mode to toggle (current) column highlighting
+;; to continuously highlight current column, uncomment below line of code  
+;;(column-highlight-mode 1)
+
+
+;; get rid of the ugly scroll bar!!
+;; see /u/ GJStein @ https://goo.gl/HJWv69 (emacs.stackexchange)
+(scroll-bar-mode -1)
+
+
 ;; set indent size
 (setq standard-indent 2)
 
@@ -97,19 +131,17 @@
 
 
 ;; enable line & column numbering
-;; see /u/ Noufal Ibrahim on line numbering
-;; @ http://stackoverflow.com/questions/2034470/how-do-i-enable-line-numbers-on-the-left-everytime-i-open-emacs
+;; see /u/ Noufal Ibrahim on line numbering @ https://goo.gl/qvAa8G (stackoverflow)
 (global-linum-mode t)
 (column-number-mode 1)
 
 
-;; turn off line wrapping
-;; see http://www.emacswiki.org/emacs/LineWrap, http://www.emacswiki.org/emacs/TruncateLines
+;; turn off line wrapping -- see https://goo.gl/JLM9YJ (emacs wiki)
 (set-default 'truncate-lines t)
 
 
 ;; turn off end-of-buffer beep
-;; see /u/ phils @ http://stackoverflow.com/questions/10545437/how-to-disable-the-beep-in-emacs-on-windows
+;; see /u/ phils @ https://goo.gl/CZia6J (stackoverflow)
 (setq visible-bell 1)
 
 
@@ -119,15 +151,17 @@
 (show-paren-mode 1)
 (setq show-paren-style 'expression)
 
+
 ;; imenu -- lists (only) top-level definitions -- defun, defvar, etc.
-;; see M-x imenu usage @ http://camdez.com/blog/2013/11/28/emacs-rapid-buffer-navigation-with-imenu/
+;; see M-x imenu usage @ https://goo.gl/tBFe5z (camdez.com)
 ;; set up imenu to automatically rescan buffer contents to reflect new jump targets
 (setq imenu-auto-rescan t)
 
 
 ;; enable which-function-mode
+;; see http://emacsredux.com/blog/2014/04/05/which-function-mode/
 (which-function-mode 1)
-(setq which-func-unknown "n/a") ;; see http://emacsredux.com/blog/2014/04/05/which-function-mode/
+(setq which-func-unknown "n/a")
 
 
 ;; disable erase-buffer (as default)
@@ -136,15 +170,19 @@
 (put 'erase-buffer 'disabled t)
 
 
+;; enable winner mode -- see /u/ phils @ https://goo.gl/nzEY4C (stackoverflow)
+;; NOTE: to just unsplit a window, use C-x 0 (see /u/ remi @ same link above)
+(winner-mode 1) ;"C-c <left>" and "C-c <right>" undo and re-do window changes.
+
+
 ;; set the layout definition at startup
 ;; first, either programmaticaly or manually (only once), inhibit the startup screen
-;; see http://stackoverflow.com/questions/744672/unable-to-hide-welcome-screen-in-emacs
+;; see https://goo.gl/PDDZu4 (stackoverflow)
 ;; code from /u/ joshz; exact manual steps from /u/ zack marrapese
 ;; next, call my-start-up-layout (see below)
-;; see http://emacs.stackexchange.com/questions/822/how-to-setup-default-windows-at-startup
+;; see /u/ nsukami _ @ https://goo.gl/YQQYdn (emacs.stackexchange)
 ;; code (i have modified a bit) from /u/ nsukami _
-;; buffer-list code (modified) from /u/ trey jackson @
-;; http://stackoverflow.com/questions/1231188/emacs-list-buffers-behavior
+;; buffer-list code (modified) from /u/ trey jackson @ https://goo.gl/KQwV4B (so)
 (defun my-startup-layout ()
   (interactive)
   (setq inhibit-startup-screen t)   ;; inhibit welcome screen
@@ -152,8 +190,9 @@
   (split-window-horizontally)       ;; -> |
   (find-file "~/.emacs.d/init.el")
   (next-multiframe-window)
-  (find-file (expand-file-name "~/software-development/code/patience-diff/patience-diff.hs"))
-  (split-window-vertically)
+  (find-file
+   (expand-file-name "~/software-development/code/patience-diff/patience-diff.hs"))
+  (split-window-vertically)         ;; -> __
   (next-multiframe-window)
   (switch-to-buffer (list-buffers-noselect)))  ;; buffer list window
 
@@ -169,6 +208,22 @@
 (setq fci-rule-column 92)   ;; marker @ column 92
 
 
+
+;; -------------------------------- global key bindings ------------------------------------
+
+;; imenu key sequence -- see https://www.emacswiki.org/emacs/ImenuMode
+;; for global kbd, see /u/ Bozhidar Batsov @ https://goo.gl/dc59Kq (stackoverflow)
+(global-set-key (kbd "C-x C-i") 'imenu)
+
+
+;; key binding for dired mode default directory
+;; see https://www.emacswiki.org/emacs/DiredMode
+(global-set-key (kbd "S-<f1>")  ;; shift-<f1>
+  (lambda ()
+    (interactive)
+    (dired "~/software-development/code/haskell-stuff")))
+
+
 ;; text alignment -- bind align-regexp to C-x a r
 ;; see https://github.com/haskell/haskell-mode/wiki/Indentation#aligning-code
 (global-set-key (kbd "C-x a r") 'align-regexp)
@@ -180,7 +235,7 @@
 ;; customizations
 ;; -----------------------------------------------------------------------------------------
 
-;; --------- loading a custom-theme (solarized-dark, sanityinc-tomorrow-blue, etc.) ---------
+;; --------- loading a custom-theme (solarized-dark, sanityinc-tomorrow-blue, etc.) --------
 ;; 1. check if the required custom theme package is listed in the my-packages variable
 ;;    (see above); if not, add the new custom theme package to the my-packages variable
 ;; 2. re-load init.el (through a emacs restart)
@@ -191,8 +246,8 @@
 
 ;; ----------------------- how to load a custom theme from init.el -------------------------
 ;; loading a custom color theme is tricky --
-;; see issue from /u/ Ryan @ http://stackoverflow.com/questions/15555309/emacs-for-windows-error-loading-color-theme
-;; see fix from /u/ Xinan @ http://emacs.stackexchange.com/questions/2797/emacs-wont-load-theme-on-startup
+;; see issue from /u/ Ryan @ https://goo.gl/GNgq7r (stackoverflow)
+;; see fix from /u/ Xinan @ https://goo.gl/2VAzTU (emacs.stackexchange)
 ;; (a) to be modular, over here, we create a seperate theme file for each custom theme
 ;; (b) each theme file has code to load the custom theme + any manual face customizations
 ;; (c) to load a custom theme, you just load your theme file from init.el
@@ -216,10 +271,10 @@
 (load "prem-solarized-dark")
 
 
-;; ---------------------- face customizations -- general guidelines -----------------------
+;; ---------------------- face customizations -- general guidelines ------------------------
 ;; face customizations done through custom-set-faces, usually in the theme file
 
- ;; see /u/ Harvey, customizing fonts, @ http://emacs.stackexchange.com/questions/2501/how-can-i-set-default-font-in-emacs
+;; see /u/ Harvey, customizing fonts, @ https://goo.gl/46CP6b (emacs.stackexchange)
  ;; 1. select some code, & type M-x customize-face RET default RET, choose white for
  ;;    foreground color, & click "apply all changes" -> makes general font white
  ;; 2. select some comment, type M-x customize-face RET & choose forground color
@@ -234,8 +289,8 @@
  ;;    can edit & save the item you clicked
  ;; 5. choose highlight line (hl-line) color as follows:
  ;;    M-x customize-face RET hl-line, pick a color, & apply all changes
- ;;    see /u/ juanleon @ http://stackoverflow.com/questions/17701576/changing-highlight-line-color-in-emacs
-;; -----------------------------------------------------------------------------------------
+ ;;    see /u/ juanleon @ https://goo.gl/ADz6Ni (stackoverflow)
+ ;; -----------------------------------------------------------------------------------------
 
 
 (custom-set-variables
@@ -243,22 +298,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(custom-enabled-themes nil)
- '(haskell-tags-on-save t)
- '(inhibit-startup-screen nil)
- '(show-paren-mode t))
+ '(haskell-process-auto-import-loaded-modules t)
+ '(haskell-process-log t)
+ '(haskell-process-suggest-hoogle-imports t)
+ '(haskell-process-suggest-remove-import-lines t)
+ '(haskell-process-type (quote auto))
+ '(haskell-tags-on-save t))
 
-
-;; ---------------------- mode-line which-func display customization ------------------------
-;; which-func mode-line display customization code & comments moved out to a seperate file.
-;; this new file is called which-func-mode-line-display.el
-;;
-;; if you want to customize which-func display in mode-line, you should simply add
-;; the below line of code, which loads this new file, right after these comments:
-;;
-;;          (load "which-func-mode-line-display")
-
-;; (load "which-func-mode-line-display")
 ;; -----------------------------------------------------------------------------------------
 

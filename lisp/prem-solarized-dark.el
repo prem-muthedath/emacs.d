@@ -30,13 +30,11 @@
 
 ;; ----------------------- load solarized theme  -------------------------
 ;; loading a custom color theme is tricky --
-;; see issue from /u/ Ryan @ http://stackoverflow.com/questions/15555309/emacs-for-windows-error-loading-color-theme
-;; see fix from /u/ Xinan @ http://emacs.stackexchange.com/questions/2797/emacs-wont-load-theme-on-startup
+;; see issue from /u/ Ryan @ https://goo.gl/GNgq7r (stackoverflow)
+;; see fix from /u/ Xinan @ https://goo.gl/2VAzTU (emacs.stackexchange)
 (add-hook 'after-init-hook (lambda () (load-theme 'solarized-dark t)))
 ;; -----------------------------------------------------------------------------------------
 
-;; i have decided to go with solarized-dark pretty much out-of-the-box
-;; i have changed only the default font to Courier
-;; i have eliminated all of the previous custom face settings
-(custom-set-faces
-   '(default ((t (:family "Courier")))))
+;; no face customizations -- now using solarized-dark out-of-the-box
+
+
