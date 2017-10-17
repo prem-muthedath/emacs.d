@@ -1,8 +1,8 @@
-;; ****************************** prem's emacs.d/init.el ************************************
+;; ****************************** prem's emacs.d/init.el*********************************
 ;; for an example of a well-organized emacs set up,
 ;; see https://github.com/camdez/emacs.d
 ;;
-;; ------------------------------- packages & environment ----------------------------------
+;; ------------------------------- packages & environment -------------------------------
 (setq debug-on-error t)  ;; debug on error
 
 ;; add load path for emacs
@@ -23,28 +23,31 @@
 ;; load packages (in init)
 ;;
 ;; NOTE:
-;; emacs automatically calls package-initialize (whether or not it is in init.el),
-;; but only AFTER first loading init.el. but if init.el itself contains code
-;; that depends on a call to package-initialize, then you have to EXPLICITLY call
-;; package-initialize in init.el.
+;; emacs automatically calls package-initialize (whether or not it is in init.el), but only
+;; AFTER first loading init.el. but if init.el itself contains code that depends on a call
+;; to package-initialize, then you have to EXPLICITLY call package-initialize in init.el.
 ;;
-;; we've such a case here, as the code below for installing packages uses
-;; package-installed-p, which uses a list of installed packages that
-;; package-initialize fills.
+;; we've such a case here, as the code below for installing packages uses package-installed-p,
+;; which uses a list of installed packages that package-initialize fills.
 ;;
 ;; /u/ lunaryom @ https://goo.gl/VPt9z6 (stackoverflow) says package-initialize also fills
-;; list of installed packages used by package-installed-p, so call package-initialize
-;; before package-installed-p
+;; list of installed packages used by package-installed-p, so call package-initialize before
+;; package-installed-p
 ;;
-;; for an excellent explanation, see also /u/ tarsius @ goo.gl/MKNBCB (emacs.stackexchange)
-;;
+;; for an excellent explanation, see also /u/ tarsius @ 
+;; https://goo.gl/MKNBCB (emacs.stackexchange)
+
 (package-initialize)
+
+;; for an excellent explanation, see also /u/ tarsius @ 
 
 
 ;; list packages for installation
 ;; see https://github.com/purcell/color-theme-sanityinc-tomorrow
 (defvar my-packages '(paredit
                       exec-path-from-shell
+                      magit
+                      visual-fill-column
                       haskell-mode
                       flycheck
                       flycheck-haskell
@@ -74,7 +77,7 @@
 
 
 
-;; ----------------------------------- set modes -------------------------------------------
+;; ----------------------------------- set modes ----------------------------------------
 ;; to make things modular, we have a seperate file for each mode
 ;; to load a mode, you just load the file for that mode
 
@@ -87,9 +90,9 @@
 
 
 
-;; ---------------------------- emacs editor settings --------------------------------------
+;; ---------------------------- emacs editor settings -----------------------------------
 ;; ----  see http://homepages.inf.ed.ac.uk/s0243221/emacs/
-;; -----------------------------------------------------------------------------------------
+;; --------------------------------------------------------------------------------------
 ;; highlight current line
 (global-hl-line-mode 1)
 
@@ -108,7 +111,7 @@
 ;;     `(col-highlight ((,class (:background ,base02))))
 ;;     `(col-highlight-face ((,class (:background ,base02))))
 
-;; use M-x column-highlight-mode to toggle (current) column highlighting
+;; use M-x column-highlight-mode (C-x c h) to toggle (current) column highlighting
 ;; to continuously highlight current column, uncomment below line of code  
 ;;(column-highlight-mode 1)
 
@@ -116,6 +119,59 @@
 ;; get rid of the ugly scroll bar!!
 ;; see /u/ GJStein @ https://goo.gl/HJWv69 (emacs.stackexchange)
 (scroll-bar-mode -1)
+
+
+;; see /u/ NikkiA @ https://goo.gl/1gsqsr (stackoverflow)
+;; NOTE: visual-fill-column-mode (see below) uses fill-column
+(setq-default fill-column 100)
+
+
+;; enable line wrap -- use visual-line-mode + visual-fill-column-mode
+;; what we need:
+;;   1. set visual-line-mode globally (i.e., for everything) -- i can't see
+;;      a clear plus for visual-line-mode, except that it avoids arrow marks, etc.
+;;      but we'll go with it anyway.
+;;   2. set visual-fill-column-mode just for prog-mode and text-mode -- for code and
+;;      and text, having an automatic visual wrap @ fill-column is needed, but for
+;;      other stuff -- such as completion-list-mode, magit, etc -- it becomes pesky
+;;
+;; first, we'll activate visual-line-mode globally
+;; for visual-line-mode, see /u/ jeff spaulding, /u/ JeanPierre @
+;; https://emacs.stackexchange.com/questions/19629/word-wrap-line-option-by-default
+(global-visual-line-mode t)
+
+;; for visual-fill-column-mode, see:
+;;   http://emacshorrors.com/posts/longlines-mode.html
+;;   https://github.com/joostkremers/visual-fill-column
+;;
+;; the usual approach (see emacshorrors.com) is to have visual-fill-column-mode
+;; wherever visual-line-mode is active:
+;;
+;;    (add-hook 'visual-line-mode-hook 'visual-fill-column-mode)
+;;
+;; but we need visual-fill-column-mode only for code and text -- how to get this done?
+;;    key ideas from:
+;;         1. /u/ holt, /u/ lindydancer @ https://goo.gl/Kqg42e (emacs.stackexchange)
+;;         2. GREAT introduction to hooks -- see https://goo.gl/YcTvMq (gnu.org)
+;;
+;;    for general ideas (with code) on how to AUTOMATICALLY DISABLE a GLOBAL minor mode
+;;    for a specific major mode, see:
+;;         (NOTE: THESE DIDN'T WORK FOR THIS PROBLEM, BUT THEY COULD ELSEWHERE)
+;;         1. see /u/ phils, /u/ djangoliv @ https://goo.gl/qVs6gv (emacs.stackexchange)
+;;         2. see /u/ phils @ https://goo.gl/9XD7Sp (stackoverflow)
+;;
+;;    the approach is simple -- we first create a customized hook to activate
+;;    visual-column-fill-column-mode, and then add that hook to just prog-mode and text-mode.
+;;    => we activate visual-fill-column-mode ONLY for code and text -- and for nothing else.
+;;
+;;    NOTE: you still can turn off visual-fill-column-mode for a specific code/text buffer
+;;          -- just run the toggle command: M-x visual-fill-column-mode  (C-x v f)
+
+(defun my-visual-fill-column-mode-hook ()
+  (visual-fill-column-mode 1))
+
+(add-hook 'prog-mode-hook 'my-visual-fill-column-mode-hook)
+(add-hook 'text-mode-hook 'my-visual-fill-column-mode-hook)
 
 
 ;; set indent size
@@ -134,10 +190,6 @@
 ;; see /u/ Noufal Ibrahim on line numbering @ https://goo.gl/qvAa8G (stackoverflow)
 (global-linum-mode t)
 (column-number-mode 1)
-
-
-;; turn off line wrapping -- see https://goo.gl/JLM9YJ (emacs wiki)
-(set-default 'truncate-lines t)
 
 
 ;; turn off end-of-buffer beep
@@ -200,16 +252,8 @@
 (add-hook 'after-init-hook (lambda () (my-startup-layout)))
 
 
-;; enable fill column indicator
-;; see http://www.emacswiki.org/emacs/FillColumnIndicator
-;; used here to see if lines have > 92 chars, which makes reading difficult in emacs
-(require 'fill-column-indicator)
-(add-hook 'after-change-major-mode-hook 'fci-mode)
-(setq fci-rule-column 92)   ;; marker @ column 92
 
-
-
-;; -------------------------------- global key bindings ------------------------------------
+;; -------------------------------- global key bindings ---------------------------------
 
 ;; imenu key sequence -- see https://www.emacswiki.org/emacs/ImenuMode
 ;; for global kbd, see /u/ Bozhidar Batsov @ https://goo.gl/dc59Kq (stackoverflow)
@@ -224,18 +268,49 @@
     (dired "~/software-development/code/haskell-stuff")))
 
 
+;; key binding to switch to completion buffer
+;; for minibuffer completion, you can also use M-v
+;; see /u/ keith flower @ https://goo.gl/uHABCw (stackoverflow)
+(define-key global-map (kbd "C-x t") 'switch-to-completions)
+
+
+;; key binding for magit status
+;; see https://magit.vc/manual/magit.html#Installing-from-an-Elpa-Archive
+(global-set-key (kbd "C-x g") 'magit-status)
+
+
+;; key binding to browse url -- key idea (modified) from /u/ DoMiNeLa10, /u/ xuhdev @
+;; https://emacs.stackexchange.com/questions/29117/how-can-i-open-an-url-file-in-emacs-dired
+(global-set-key (kbd "<C-return>") 'browse-url)
+
+
+;; key binding to toggle visual-fill-column-mode
+(global-set-key (kbd "C-x v f") 'visual-fill-column-mode)
+
+
+;; key binding to toggle column-highlight-mode
+(global-set-key (kbd "C-x c h") 'column-highlight-mode)
+
+
+;; key binding to comment region (active/inactive)
+;; for comment/uncomment lines/regions, see https://goo.gl/kvg7Cz (gnu.org)
+;; M-; -- GREAT for comment/uncomment line/region (active)
+;; M-j -- GREAT for newline + indent + comment -- see https://goo.gl/hevbxM (emacs.redux)
+(global-set-key (kbd "C-x c r") 'comment-region)
+
+
 ;; text alignment -- bind align-regexp to C-x a r
 ;; see https://github.com/haskell/haskell-mode/wiki/Indentation#aligning-code
 (global-set-key (kbd "C-x a r") 'align-regexp)
 
 
 
-;; --------------------------------- themes & faces ----------------------------------------
+;; --------------------------------- themes & faces -------------------------------------
 ;; in this set up, we load a custom theme, with perhaps a bunch of manual face
 ;; customizations
-;; -----------------------------------------------------------------------------------------
+;; --------------------------------------------------------------------------------------
 
-;; --------- loading a custom-theme (solarized-dark, sanityinc-tomorrow-blue, etc.) --------
+;; --------- loading a custom-theme (solarized-dark, sanityinc-tomorrow-blue, etc.) -----
 ;; 1. check if the required custom theme package is listed in the my-packages variable
 ;;    (see above); if not, add the new custom theme package to the my-packages variable
 ;; 2. re-load init.el (through a emacs restart)
@@ -244,7 +319,7 @@
 ;; 5. get the exact name of the custom theme you want to load from that list
 ;; 6. see "how to load a custom theme from init.el" section for next steps
 
-;; ----------------------- how to load a custom theme from init.el -------------------------
+;; ----------------------- how to load a custom theme from init.el ----------------------
 ;; loading a custom color theme is tricky --
 ;; see issue from /u/ Ryan @ https://goo.gl/GNgq7r (stackoverflow)
 ;; see fix from /u/ Xinan @ https://goo.gl/2VAzTU (emacs.stackexchange)
@@ -266,31 +341,31 @@
 ;;        your theme file name
 ;;     5. save the theme file & init.el; restart emacs -- the new theme
 ;;        should now be in effect
-;; -----------------------------------------------------------------------------------------
+;; --------------------------------------------------------------------------------------
 
 (load "prem-solarized-dark")
 
 
-;; ---------------------- face customizations -- general guidelines ------------------------
+;; ---------------------- face customizations -- general guidelines ---------------------
 ;; face customizations done through custom-set-faces, usually in the theme file
 
 ;; see /u/ Harvey, customizing fonts, @ https://goo.gl/46CP6b (emacs.stackexchange)
- ;; 1. select some code, & type M-x customize-face RET default RET, choose white for
- ;;    foreground color, & click "apply all changes" -> makes general font white
- ;; 2. select some comment, type M-x customize-face RET & choose forground color
- ;;    "light slate grey" & click "apply all changes" -> makes comments "light slate grey"
- ;; 3. you could do 1 & 2 in an another way as well: select some code, then
- ;;    M-x customize-face RET RET, & then choose foreground colors for default font,
- ;;    font-lock-comment-face, & anything else you wish; then click "apply all changes"
- ;;    button at the top
- ;; 4. or if you M-x customize-face RET TAB, emacs will list (in another buffer) all items
- ;;    -- such as font-lock-comment-face, font-lock-function-name, etc -- you can modify.
- ;;    you can click on an item and then hit RET, which will put you on a screen where you
- ;;    can edit & save the item you clicked
- ;; 5. choose highlight line (hl-line) color as follows:
- ;;    M-x customize-face RET hl-line, pick a color, & apply all changes
- ;;    see /u/ juanleon @ https://goo.gl/ADz6Ni (stackoverflow)
- ;; -----------------------------------------------------------------------------------------
+;;  1. select some code, & type M-x customize-face RET default RET, choose white for
+;;     foreground color, & click "apply all changes" -> makes general font white
+;;  2. select some comment, type M-x customize-face RET & choose forground color
+;;    "light slate grey" & click "apply all changes" -> makes comments "light slate grey"
+;;  3. you could do 1 & 2 in an another way as well: select some code, then
+;;     M-x customize-face RET RET, & then choose foreground colors for default font,
+;;     font-lock-comment-face, & anything else you wish; then click "apply all changes"
+;;     button at the top
+;;  4. or if you M-x customize-face RET TAB, emacs will list (in another buffer) all
+;;     items -- such as font-lock-comment-face, font-lock-function-name, etc -- you can
+;;     modify. you can click on an item and then hit RET, which will put you on a screen
+;;     where you can edit & save the item you clicked
+;;  5. choose highlight line (hl-line) color as follows:
+;;     M-x customize-face RET hl-line, pick a color, & apply all changes
+;;     see /u/ juanleon @ https://goo.gl/ADz6Ni (stackoverflow)
+;; -------------------------------------------------------------------------------------
 
 
 (custom-set-variables
@@ -303,7 +378,12 @@
  '(haskell-process-suggest-hoogle-imports t)
  '(haskell-process-suggest-remove-import-lines t)
  '(haskell-process-type (quote auto))
- '(haskell-tags-on-save t))
+ '(haskell-tags-on-save t)
+ '(visual-fill-column-fringes-outside-margins nil)
+ '(split-window-preferred-function (quote visual-fill-column-split-window-sensibly))
+ ;; startup emacs on full-screen mode
+ ;; see "configuring full screen mode" @ https://www.emacswiki.org/emacs/FullScreen
+ ;; NOTE: for another way, see /u/ Scott Weldon @ https://goo.gl/XbmfJL (emacs.stackexchange)
+ '(initial-frame-alist (quote ((fullscreen . maximized)))))
 
 ;; -----------------------------------------------------------------------------------------
-

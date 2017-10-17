@@ -1,12 +1,12 @@
-;; ---------------------------- prem's haskell-mode settings -------------------------------
+;; ---------------------------- prem's haskell-mode settings -----------------------------
 ;; see http://haskell.github.io/haskell-mode/manual/latest/index.html#Top
 ;; see https://github.com/serras/emacs-haskell-tutorial/blob/master/tutorial.md
 ;;
 ;; for basic sandbox usage (for installing binaries like hasktags, etc), see
 ;; http://bob.ippoli.to/archives/2013/01/11/getting-started-with-haskell/
 ;;
-;; note -- not using paredit for haskell-mode, as key bindings had conflicts with ghc-mod
-;; -----------------------------------------------------------------------------------------
+;; note -- not using paredit for haskell-mode, as key bindings clashed with ghc-mod
+;; ---------------------------------------------------------------------------------------
 ;; setting path for executables -- cabal, ghc-mod, hdevtools, hoogle, etc
 ;; NOTE: not needed at the moment, as ~/.local/bin and ~/.cabal/bin are on PATH
 
@@ -94,4 +94,4 @@
                (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
                (modes quote (haskell-mode literate-haskell-mode)))))
 
-;; -----------------------------------------------------------------------------------------
+;; ------------------------------------------------------------------------------------------
