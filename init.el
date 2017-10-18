@@ -89,7 +89,7 @@
 (load "prem-haskell-mode")
 
 
-
+;;(add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
 ;; ---------------------------- emacs editor settings -----------------------------------
 ;; ----  see http://homepages.inf.ed.ac.uk/s0243221/emacs/
 ;; --------------------------------------------------------------------------------------
@@ -160,9 +160,12 @@
 ;;         1. see /u/ phils, /u/ djangoliv @ https://goo.gl/qVs6gv (emacs.stackexchange)
 ;;         2. see /u/ phils @ https://goo.gl/9XD7Sp (stackoverflow)
 ;;
-;;    the approach is simple -- we first create a customized hook to activate
-;;    visual-column-fill-column-mode, and then add that hook to just prog-mode and text-mode.
-;;    => we activate visual-fill-column-mode ONLY for code and text -- and for nothing else.
+;;    the approach is simple (see "key idea 1"):
+;;       -- we first create a customized hook, my-visual-fill-column-mode-hook, to activate
+;;          visual-column-fill-column-mode
+;;       -- we then add that hook to just prog-mode-hook and text-mode-hook
+;;       -- with this done, visual-fill-column-mode becomes active ONLY for code and text --
+;;          and for nothing else
 ;;
 ;;    NOTE: you still can turn off visual-fill-column-mode for a specific code/text buffer
 ;;          -- just run the toggle command: M-x visual-fill-column-mode  (C-x v f)
@@ -367,6 +370,25 @@
 ;;     see /u/ juanleon @ https://goo.gl/ADz6Ni (stackoverflow)
 ;; -------------------------------------------------------------------------------------
 
+;; CUSTOM-SET-VARABLES -- SOME NOTES:
+;;  1. visual-fill-column-mode:
+;;     -- see https://github.com/joostkremers/visual-fill-column 
+;;     -- to avoid mangled (left) fringes:
+;;          (visual-fill-column-fringes-outside-margins nil)
+;;     -- to avoid problems with vertical window splits, as suggested at github link:
+;;          (split-window-preferred-function (quote visual-fill-column-split-window-sensibly))
+;;  2. emacs fullscreen at startup:
+;;     -- what exactly is emacs fullscreen?
+;;          https://goo.gl/NtWEsx (gnu.org) explains what exactly is fullscreen, as well as
+;;          difference between (fullscreen . maximized) vs. (fullscreen . fullboth)
+;;     -- how to set up emacs fullscreen using custom-set-variables?
+;;          see "configuring full screen mode" @ https://www.emacswiki.org/emacs/FullScreen
+;;     -- code source:
+;;          I  MODIFIED THE CODE FROM THE emacswiki LINK -- CHANGED (fullscreen . maximized) to
+;;          (fullscreen . fullboth) AS (fullscreen . maximized) STILL SHOWS THE TITLE BAR
+;;     -- other links:
+;;          see /u/ antonio @ https://goo.gl/XbmfJL (emacs.stackexchange) for another
+;;          way to set fullscreen at start up; see also /u/ scott weldon, /u/ dan at same link
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -381,9 +403,7 @@
  '(haskell-tags-on-save t)
  '(visual-fill-column-fringes-outside-margins nil)
  '(split-window-preferred-function (quote visual-fill-column-split-window-sensibly))
- ;; startup emacs on full-screen mode
- ;; see "configuring full screen mode" @ https://www.emacswiki.org/emacs/FullScreen
- ;; NOTE: for another way, see /u/ Scott Weldon @ https://goo.gl/XbmfJL (emacs.stackexchange)
- '(initial-frame-alist (quote ((fullscreen . maximized)))))
+ '(initial-frame-alist (quote ((fullscreen . fullboth))))
+ )
 
 ;; -----------------------------------------------------------------------------------------
