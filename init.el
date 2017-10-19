@@ -232,7 +232,7 @@
 ;; code (i have modified a bit) from /u/ nsukami _
 ;; buffer-list code (modified) from /u/ trey jackson @ https://goo.gl/KQwV4B (so)
 (defun my-startup-layout ()
-  "customized windows layout at startup"
+  "customize windows layout at startup"
   (interactive)
   (setq inhibit-startup-screen t)   ;; inhibit welcome screen
   (delete-other-windows)
