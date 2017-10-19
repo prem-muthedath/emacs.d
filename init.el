@@ -162,7 +162,7 @@
 ;;
 ;;    the approach is simple (see "key idea 1"):
 ;;       -- we first create a customized hook, my-visual-fill-column-mode-hook, to activate
-;;          visual-column-fill-column-mode
+;;          visual-fill-column-mode
 ;;       -- we then add that hook to just prog-mode-hook and text-mode-hook
 ;;       -- with this done, visual-fill-column-mode becomes active ONLY for code and text --
 ;;          and for nothing else
