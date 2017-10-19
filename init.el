@@ -296,6 +296,10 @@
 (global-set-key (kbd "C-x c r") 'comment-region)
 
 
+;; key binding for process list -- see https://goo.gl/Tj92wC (gnu.org)
+(global-set-key (kbd "C-x p l") 'list-processes)
+
+
 ;; text alignment -- bind align-regexp to C-x a r
 ;; see https://github.com/haskell/haskell-mode/wiki/Indentation#aligning-code
 (global-set-key (kbd "C-x a r") 'align-regexp)
@@ -395,8 +399,8 @@
  '(haskell-process-suggest-remove-import-lines t)
  '(haskell-process-type (quote auto))
  '(haskell-tags-on-save t)
- '(visual-fill-column-fringes-outside-margins nil)
+ '(initial-frame-alist (quote ((fullscreen . fullboth))))
  '(split-window-preferred-function (quote visual-fill-column-split-window-sensibly))
- '(initial-frame-alist (quote ((fullscreen . fullboth)))))
+ '(visual-fill-column-fringes-outside-margins nil))
 
 ;; -----------------------------------------------------------------------------------------

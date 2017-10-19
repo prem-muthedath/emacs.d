@@ -96,7 +96,6 @@
   (add-to-list 'align-rules-list    ;; Prem added: $ alignment
              '(haskell-dollar
                (regexp . "\\(\\s-+\\)\\(\\$\\)\\s-+")
-               (modes quote (haskell-mode literate-haskell-mode))))
-  )
+               (modes quote (haskell-mode literate-haskell-mode)))))
 
 ;; ------------------------------------------------------------------------------------------
