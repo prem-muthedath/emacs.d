@@ -171,6 +171,7 @@
 ;;          -- just run the toggle command: M-x visual-fill-column-mode  (C-x v f)
 
 (defun my-visual-fill-column-mode-hook ()
+  "customized hook for enabling visual-fill-column-mode"
   (visual-fill-column-mode 1))
 
 (add-hook 'prog-mode-hook 'my-visual-fill-column-mode-hook)
@@ -219,12 +220,6 @@
 (setq which-func-unknown "n/a")
 
 
-;; disable erase-buffer (as default)
-;; to disable, replaced nil with t in the erase-buffer *enabling* code
-;; listed @ http://emacsredux.com/blog/2013/05/04/erase-buffer/
-(put 'erase-buffer 'disabled t)
-
-
 ;; enable winner mode -- see /u/ phils @ https://goo.gl/nzEY4C (stackoverflow)
 ;; NOTE: to just unsplit a window, use C-x 0 (see /u/ remi @ same link above)
 (winner-mode 1) ;"C-c <left>" and "C-c <right>" undo and re-do window changes.
@@ -239,6 +234,7 @@
 ;; code (i have modified a bit) from /u/ nsukami _
 ;; buffer-list code (modified) from /u/ trey jackson @ https://goo.gl/KQwV4B (so)
 (defun my-startup-layout ()
+  "customized windows layout at startup"
   (interactive)
   (setq inhibit-startup-screen t)   ;; inhibit welcome screen
   (delete-other-windows)
@@ -403,7 +399,6 @@
  '(haskell-tags-on-save t)
  '(visual-fill-column-fringes-outside-margins nil)
  '(split-window-preferred-function (quote visual-fill-column-split-window-sensibly))
- '(initial-frame-alist (quote ((fullscreen . fullboth))))
- )
+ '(initial-frame-alist (quote ((fullscreen . fullboth)))))
 
 ;; -----------------------------------------------------------------------------------------
