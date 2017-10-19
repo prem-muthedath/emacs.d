@@ -39,8 +39,6 @@
 
 (package-initialize)
 
-;; for an excellent explanation, see also /u/ tarsius @ 
-
 
 ;; list packages for installation
 ;; see https://github.com/purcell/color-theme-sanityinc-tomorrow
