@@ -89,7 +89,7 @@
 (load "prem-haskell-mode")
 
 
-;;(add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
+
 ;; ---------------------------- emacs editor settings -----------------------------------
 ;; ----  see http://homepages.inf.ed.ac.uk/s0243221/emacs/
 ;; --------------------------------------------------------------------------------------
