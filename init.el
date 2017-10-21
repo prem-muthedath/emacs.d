@@ -303,7 +303,6 @@
 (global-set-key (kbd "C-x c h") 'column-highlight-mode)
 
 
-
 ;; key binding to comment region (active/inactive)
 ;; for comment/uncomment lines/regions, see https://goo.gl/kvg7Cz (gnu.org)
 ;; M-; -- GREAT for comment/uncomment line/region (active)
