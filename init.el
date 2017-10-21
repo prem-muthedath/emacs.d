@@ -176,6 +176,20 @@
 (add-hook 'text-mode-hook 'my-visual-fill-column-mode-hook)
 
 
+;; customize visual-fill-colum-mode for column-highlight-mode
+;;   -- visual-fill-column-mode and column-highlight-mode don't go well together
+;;   -- when visual-fill-column-mode is active, if we turn on column-highlight-mode,
+;;      the left fringe and line numbers disappear/appear randomly during cursor moves
+;;   -- to avoid this, whenever column-highlight-mode is on, the below code turns off
+;;      visual-fill-column-mode, and vice versa
+;;   -- code is my hack, but see also /u/ phils @ https://goo.gl/k5ARFf
+;;      (emacs.stackexchange) for other ideas for similiar problems
+(add-hook 'column-highlight-mode-hook (lambda ()
+                                        (if column-highlight-mode
+                                            (visual-fill-column-mode 0)
+                                          (my-visual-fill-column-mode-hook))))
+
+
 ;; set indent size
 (setq standard-indent 2)
 
@@ -287,6 +301,7 @@
 
 ;; key binding to toggle column-highlight-mode
 (global-set-key (kbd "C-x c h") 'column-highlight-mode)
+
 
 
 ;; key binding to comment region (active/inactive)
