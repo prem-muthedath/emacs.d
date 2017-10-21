@@ -228,7 +228,7 @@
 
 ;; enable which-function-mode
 ;; see http://emacsredux.com/blog/2014/04/05/which-function-mode/
-(which-function-mode 1)
+(which-function-mode)
 (setq which-func-unknown "n/a")
 
 
@@ -265,11 +265,6 @@
 
 
 ;; -------------------------------- global key bindings ---------------------------------
-
-;; imenu key sequence -- see https://www.emacswiki.org/emacs/ImenuMode
-;; for global kbd, see /u/ Bozhidar Batsov @ https://goo.gl/dc59Kq (stackoverflow)
-(global-set-key (kbd "C-x C-i") 'imenu)
-
 
 ;; key binding for dired mode default directory
 ;; see https://www.emacswiki.org/emacs/DiredMode
