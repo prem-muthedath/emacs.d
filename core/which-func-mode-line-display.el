@@ -1,4 +1,4 @@
-;; ---------------------- mode-line which-func display customization ------------------------
+;; ---------------------- mode-line which-func display customization --------------------
 ;; we customize which-func display for both mode-line active/inactive. why?
 ;; -- which-func-format defines a single face -- which-func
 ;; -- emacs, by default, uses this which-func face for display
@@ -27,10 +27,10 @@
 ;; --   buffer for selected-window -- /u/ Francesco @
 ;; --   https://goo.gl/6rgAoq (emacs.stackexchange)
 ;;
-;; solution: original which-func-format, with just face set to mode-line-emphasis (BEST)
+;; solution: original which-func-format, with just face set to mode-line-emphasis
 ;; --    simple: reuses most of the original which-func-format that uses :propertize
 ;; --    but with face set to mode-line-emphasis, instead of (the original) which-func
-;; --    mode-line-emphasis face works well for both active as well as inactive mode-line
+;; --    mode-line-emphasis face works well for both active and inactive mode-line
 (setq-default
  which-func-format
  `("["
@@ -39,4 +39,4 @@
                 face mode-line-emphasis)
    "]"))
 
-;; -----------------------------------------------------------------------------------------
+;; --------------------------------------------------------------------------------------

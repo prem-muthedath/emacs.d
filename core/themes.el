@@ -58,4 +58,4 @@
 ;;  5. choose highlight line (hl-line) color as follows:
 ;;     M-x customize-face RET hl-line, pick a color, & apply all changes
 ;;     see /u/ juanleon @ https://goo.gl/ADz6Ni (stackoverflow)
-;; -------------------------------------------------------------------------------------
+;; --------------------------------------------------------------------------------------

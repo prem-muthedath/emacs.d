@@ -29,7 +29,7 @@
       scroll-step 1                       ;; line-by-line scrolling
       visible-bell 1                      ;; end-of-buffer beep off
       show-paren-delay 0                  ;; set this BEFORE turning on parenthesis mode
-      imenu-auto-rescan t)                ;; auto-scan the buffer to reflect new jump targets
+      imenu-auto-rescan t)                ;; auto-scan buffer to reflect new jump targets
 
 
 (setq-default fill-column 100             ;; override default fill-column
@@ -58,7 +58,7 @@
 (require 'col-highlight)
 
 ;; PREM hack -- added below piece of code in solarized.el
-;; below code sets column highlight face -- the same face solarized.el sets for hl-line
+;; below code sets column highlight face -- same face solarized.el sets for hl-line
 
 ;;;;; PREM: ADDED COLUMN HIGHLIGHT FACE
 ;;;;; column-highlight-mode
@@ -73,7 +73,8 @@
 
 ;; enable line wrap -- use visual-line-mode + visual-fill-column-mode
 ;; visual-line-mode:
-;;   -- see /u/ jeff spaulding, /u/ JeanPierre @ https://goo.gl/pehkRs (emacs.stackexchange)
+;;   -- see /u/ jeff spaulding, /u/ JeanPierre @
+;;      https://goo.gl/pehkRs (emacs.stackexchange)
 ;; visual-fill-column-mode:
 ;;   -- see https://goo.gl/zUTtuy (emacshorrors.com) and
 ;;      https://goo.gl/u17LQ1 (joostkremers @ github)
@@ -84,29 +85,30 @@
 ;;   2. set visual-fill-column-mode just for prog-mode and text-mode -- for code and
 ;;      and text, having an automatic visual wrap @ fill-column is needed, but for
 ;;      other stuff -- such as completion-list-mode, magit, etc -- it becomes pesky
-;;
-(global-visual-line-mode t)  ;; activate visual-line-mode globally
+
+(global-visual-line-mode t)     ;; visual-line-mode ON globally
 
 ;; the usual approach (see emacshorrors.com) is to have visual-fill-column-mode
 ;; wherever visual-line-mode is active:
 ;;
 ;;    (add-hook 'visual-line-mode-hook 'visual-fill-column-mode)
 ;;
-;; since visual-line-mode is on globally, this code turns on visual-fill-column-mode globally
-;; as well.  but we need visual-fill-column-mode only for code & text -- how to get this done?
+;; since visual-line-mode is global, this code turns on visual-fill-column-mode
+;; globally as well.  but we need visual-fill-column-mode only for code & text
+;; -- how to get this done?
 ;; 
 ;;    key ideas from:
 ;;         1. /u/ holt, /u/ lindydancer @ https://goo.gl/Kqg42e (emacs.stackexchange)
 ;;         2. GREAT introduction to hooks -- see https://goo.gl/YcTvMq (gnu.org)
 ;;
 ;;    the approach is simple (see "key idea 1"):
-;;       -- we first create a customized hook, my-visual-fill-column-mode-hook, to activate
-;;          visual-fill-column-mode
+;;       -- we first create a customized hook, my-visual-fill-column-mode-hook,
+;;          to activate visual-fill-column-mode
 ;;       -- we then add that hook to just prog-mode-hook and text-mode-hook
-;;       -- with this done, visual-fill-column-mode becomes active ONLY for code and text --
-;;          and for nothing else
+;;       -- with this done, visual-fill-column-mode becomes active ONLY for
+;;          code and text -- and for nothing else
 ;;
-;;    NOTE: you still can turn off visual-fill-column-mode for a specific code/text buffer
+;;    NOTE: you can turn off visual-fill-column-mode for a specific code/text buffer
 ;;          -- just run the toggle command: M-x visual-fill-column-mode  (C-x v f)
 ;;
 ;;    NOTE: for general ideas (with code) on how to AUTOMATICALLY DISABLE a GLOBAL minor
@@ -164,4 +166,4 @@
 ;; execute the layout, but only AFTER init!
 (add-hook 'after-init-hook (lambda () (my-startup-layout)))
 
-;; -----------------------------------------------------------------------------------------
+;; --------------------------------------------------------------------------------------

@@ -1,11 +1,11 @@
 ;; ****************************** prem's emacs.d/init.el*********************************
 ;; for a well-organized emacs set up, see https://github.com/camdez/emacs.d
-;;
-;; ------------------------------- packages & environment -------------------------------
+;; ------------------------------------------------------ -------------------------------
+
 (setq debug-on-error t)  ;; debug on error
 
 
-;; define the basic paths -- ideas straight from camdez!
+;; define basic paths -- ideas straight from camdez!
 (defvar prem/emacs-dir
   (file-name-directory (or load-file-name
                            buffer-file-name))
@@ -24,7 +24,7 @@
   "File containing my custom settings.")
 
 
-;; add load path for emacs
+;; set load path for emacs
 ;; see https://www.gnu.org/software/emacs/manual/html_node/eintr/Loading-Files.html
 ;; see https://github.com/camdez/emacs.d/blob/master/init.el
 ;; see http://www.emacswiki.org/emacs/LoadPath
@@ -33,27 +33,38 @@
       (list prem/core-dir prem/lib-dir))
 
 
+;; fix for "ls does not --dired" OS X error, seen while building imenu index
+;; code from /u/ crippledlambda @ https://goo.gl/GE8Y2v (stackoverflow)
+(when (eq system-type 'darwin)
+  (require 'ls-lisp)
+  (setq ls-lisp-use-insert-directory-program nil))
+
+
+
+;; install/load packages:
 ;; first, initialize all packages from MELPA stable
-;; see "how to install packages using ELPA, MELPA"
-;; link -- http://ergoemacs.org/emacs/emacs_package_system.html
+;;   -- see "how to install packages using ELPA, MELPA" @
+;;   -- http://ergoemacs.org/emacs/emacs_package_system.html
 (require 'package)
 (add-to-list 'package-archives
              '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
 
 
-;; load packages (in init)
+;; next, install/load packages (in init):
 ;;
 ;; NOTE:
-;; emacs automatically calls package-initialize (whether or not it is in init.el), but only
-;; AFTER first loading init.el. but if init.el itself contains code that depends on a call
-;; to package-initialize, then you have to EXPLICITLY call package-initialize in init.el.
+;; emacs automatically calls package-initialize (whether or not it is in init.el),
+;; but only AFTER first loading init.el. but if init.el itself contains code that
+;; depends on a call to package-initialize, then you have to EXPLICITLY call
+;; package-initialize in init.el.
 ;;
-;; we've such a case here, as the code below for installing packages uses package-installed-p,
-;; which uses a list of installed packages that package-initialize fills.
+;; we've such a case here, as the code below for installing packages uses
+;; package-installed-p, which uses a list of installed packages that
+;; package-initialize fills.
 ;;
-;; /u/ lunaryom @ https://goo.gl/VPt9z6 (stackoverflow) says package-initialize also fills
-;; list of installed packages used by package-installed-p, so call package-initialize before
-;; package-installed-p
+;; /u/ lunaryom @ https://goo.gl/VPt9z6 (stackoverflow) says: "package-initialize
+;; also fills list of installed packages used by package-installed-p, so call
+;; package-initialize before package-installed-p"
 ;;
 ;; for an excellent explanation, see also /u/ tarsius @ 
 ;; https://goo.gl/MKNBCB (emacs.stackexchange)
@@ -83,16 +94,12 @@
     (package-install p)))
 
 
+
 ;; set PATH same as shell --> very critical!!
+;; NOTE: this code should be AFTER install/load packages section; else, emacs
+;;       will not find the function (exec-path-from-shell-initialize)
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
-
-
-;; fix for "ls does not --dired" OS X error, seen while building imenu index (see below)
-;; from /u/ crippledlambda @ https://goo.gl/GE8Y2v (stackoverflow)
-(when (eq system-type 'darwin)
-  (require 'ls-lisp)
-  (setq ls-lisp-use-insert-directory-program nil))
 
 
 ;; load core files -- see camdez @ github
@@ -105,4 +112,4 @@
 ;; system customizations -- see camdez @ github
 (setq custom-file prem/custom-file)
 (load custom-file 'no-error)
-;; -----------------------------------------------------------------------------------------
+;; --------------------------------------------------------------------------------------

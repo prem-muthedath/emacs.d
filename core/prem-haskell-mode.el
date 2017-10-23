@@ -1,4 +1,4 @@
-;; ---------------------------- prem's haskell-mode settings -----------------------------
+;; ---------------------------- prem's haskell-mode settings ----------------------------
 ;; see http://haskell.github.io/haskell-mode/manual/latest/index.html#Top
 ;; see https://github.com/serras/emacs-haskell-tutorial/blob/master/tutorial.md
 ;;
@@ -6,7 +6,7 @@
 ;; http://bob.ippoli.to/archives/2013/01/11/getting-started-with-haskell/
 ;;
 ;; note -- not using paredit for haskell-mode, as key bindings clashed with ghc-mod
-;; ---------------------------------------------------------------------------------------
+;; --------------------------------------------------------------------------------------
 ;; setting path for executables -- cabal, ghc-mod, hdevtools, hoogle, etc
 ;; NOTE: not needed at the moment, as ~/.local/bin and ~/.cabal/bin are on PATH
 
@@ -70,11 +70,12 @@
 ;; slightly modified to have same structure as flycheck-haskell-setup code above
 (eval-after-load 'interactive-haskell-mode
   (add-hook 'interactive-haskell-mode-hook
-            (lambda ()  (define-key (current-local-map) (kbd "<tab>") 'dabbrev-expand))))
+            (lambda ()
+              (define-key (current-local-map) (kbd "<tab>") 'dabbrev-expand))))
 
 
 ;; set haskell-mode alignment rules
-;; core code @ https://github.com/haskell/haskell-mode/wiki/Indentation#basic-indentation
+;; core code @ https://goo.gl/NejP3t (github.com/haskell)
 ;; core code + binding to align command @ https://goo.gl/s39tMB (PierreR github) 
 (with-eval-after-load 'align
   (add-to-list 'align-rules-list
@@ -98,4 +99,4 @@
                (regexp . "\\(\\s-+\\)\\(\\$\\)\\s-+")
                (modes quote (haskell-mode literate-haskell-mode)))))
 
-;; ------------------------------------------------------------------------------------------
+;; --------------------------------------------------------------------------------------

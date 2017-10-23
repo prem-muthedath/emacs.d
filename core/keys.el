@@ -20,7 +20,7 @@
 
 
 ;; key binding to browse url -- key idea (modified) from /u/ DoMiNeLa10, /u/ xuhdev @
-;; https://emacs.stackexchange.com/questions/29117/how-can-i-open-an-url-file-in-emacs-dired
+;; https://goo.gl/ALqPKs (emacs.stackexchange)
 (global-set-key (kbd "<C-return>") 'browse-url)
 
 
@@ -46,3 +46,5 @@
 ;; text alignment -- bind align-regexp to C-x a r
 ;; see https://github.com/haskell/haskell-mode/wiki/Indentation#aligning-code
 (global-set-key (kbd "C-x a r") 'align-regexp)
+
+;; --------------------------------------------------------------------------------------

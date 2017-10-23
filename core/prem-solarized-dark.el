@@ -1,7 +1,7 @@
-;; **************************** prem's solarized-dark settings ***************************
+;; **************************** prem's solarized-dark settings **************************
 ;; this file contains tunings and custom-set-faces for solarized-dark theme
 ;;
-;; ---------------------------------- solarized tunings ----------------------------------
+;; ---------------------------------- solarized tunings ---------------------------------
 ;; for solarized, first we need a some of tunings (below) for good display;
 
 ;; NOTE:
@@ -26,15 +26,15 @@
 
 ;; put the underline below font bottomline, instead of below baseline
 (setq x-underline-at-descent-line t)
-;; ---------------------------------------------------------------------------------------
+;; --------------------------------------------------------------------------------------
 
-;; ----------------------- load solarized theme  -----------------------------------------
+;; ----------------------- load solarized theme  ----------------------------------------
 ;; loading a custom color theme is tricky --
 ;; see issue from /u/ Ryan @ https://goo.gl/GNgq7r (stackoverflow)
 ;; see fix from /u/ Xinan @ https://goo.gl/2VAzTU (emacs.stackexchange)
 (add-hook 'after-init-hook (lambda () (load-theme 'solarized-dark t)))
-;; ---------------------------------------------------------------------------------------
+
 
 ;; no face customizations -- now using solarized-dark out-of-the-box
-
+;; --------------------------------------------------------------------------------------
 

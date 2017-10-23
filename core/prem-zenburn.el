@@ -1,1 +1,4 @@
- (add-hook 'after-init-hook (lambda () (load-theme 'zenburn t)))
+;; -------------------------------------------------------------------------------------
+;; load zen-burn theme
+(add-hook 'after-init-hook (lambda () (load-theme 'zenburn t)))
+;; --------------------------------------------------------------------------------------

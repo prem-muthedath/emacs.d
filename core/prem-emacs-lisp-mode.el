@@ -1,4 +1,4 @@
-;; ---------------------------- prem's emacs-lisp-mode settings --------------------------
+;; ---------------------------- prem's emacs-lisp-mode settings -------------------------
 ;; set paredit mode
 ;; syntax from @ https://github.com/camdez/emacs.d/blob/master/core/modes.el
 ;; note -- camdez sets paredit for clojure but not for emacs-lisp (a miss?)
@@ -18,4 +18,4 @@
 ;; set up imenu for easy function & other top-level definitions search
 (add-hook 'emacs-lisp-mode-hook 'imenu-add-menubar-index)
 
-;; ---------------------------------------------------------------------------------------
+;; --------------------------------------------------------------------------------------

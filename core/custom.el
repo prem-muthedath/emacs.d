@@ -10,16 +10,16 @@
 ;;          (split-window-preferred-function (quote visual-fill-column-split-window-sensibly))
 ;;  2. emacs fullscreen at startup:
 ;;     -- what exactly is emacs fullscreen?
-;;          https://goo.gl/NtWEsx (gnu.org) explains what exactly is fullscreen, as well as
-;;          difference between (fullscreen . maximized) vs. (fullscreen . fullboth)
+;;          https://goo.gl/NtWEsx (gnu.org) explains fullscreen, as well as difference
+;;          between (fullscreen . maximized) vs. (fullscreen . fullboth)
 ;;     -- how to set up emacs fullscreen using custom-set-variables?
-;;          see "configuring full screen mode" @ https://www.emacswiki.org/emacs/FullScreen
+;;          see "configuring full screen mode" @ https://goo.gl/9JeSDN (emacswiki.org)
 ;;     -- code source:
-;;          I  MODIFIED THE CODE FROM THE emacswiki LINK -- CHANGED (fullscreen . maximized) to
-;;          (fullscreen . fullboth) AS (fullscreen . maximized) STILL SHOWS THE TITLE BAR
+;;          MODIFIED CODE FROM emacswiki LINK -- CHANGED (fullscreen . maximized) to
+;;          (fullscreen . fullboth) AS (fullscreen . maximized) STILL SHOWS TITLE BAR
 ;;     -- other links:
 ;;          see /u/ antonio @ https://goo.gl/XbmfJL (emacs.stackexchange) for another
-;;          way to set fullscreen at start up; see also /u/ scott weldon, /u/ dan at same link
+;;          way to do this; see also /u/ scott weldon, /u/ dan at same link
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -45,4 +45,4 @@
  ;; If there is more than one, they won't work right.
  )
 
-;; -----------------------------------------------------------------------------------------
+;; --------------------------------------------------------------------------------------
