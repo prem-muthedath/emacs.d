@@ -78,27 +78,25 @@
 
 ;; set haskell-mode alignment rules
 ;; core code @ https://goo.gl/NejP3t (github.com/haskell)
-;; core code + binding to align command @ https://goo.gl/s39tMB (PierreR github) 
+;; core code + binding to align command @ https://goo.gl/s39tMB (PierreR github)
+;; mapc refactoring idea from camdez @ github
 (with-eval-after-load 'align
-  (add-to-list 'align-rules-list
-             '(haskell-types
-               (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
-               (modes quote (haskell-mode literate-haskell-mode))))
-  (add-to-list 'align-rules-list
-             '(haskell-assignment
-               (regexp . "\\(\\s-+\\)=\\s-+")
-               (modes quote (haskell-mode literate-haskell-mode))))
-  (add-to-list 'align-rules-list
-             '(haskell-arrows
-               (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
-               (modes quote (haskell-mode literate-haskell-mode))))
-  (add-to-list 'align-rules-list
-             '(haskell-left-arrows
-               (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
-               (modes quote (haskell-mode literate-haskell-mode))))
-  (add-to-list 'align-rules-list    ;; Prem added: $ alignment
-             '(haskell-dollar
-               (regexp . "\\(\\s-+\\)\\(\\$\\)\\s-+")
-               (modes quote (haskell-mode literate-haskell-mode)))))
+  (mapc (lambda (rule)
+          (add-to-list 'align-rules-list rule))
+        '((haskell-types
+           (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
+           (modes quote (haskell-mode literate-haskell-mode)))
+          (haskell-assignment
+           (regexp . "\\(\\s-+\\)=\\s-+")
+           (modes quote (haskell-mode literate-haskell-mode)))
+          (haskell-arrows
+           (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
+           (modes quote (haskell-mode literate-haskell-mode)))
+          (haskell-left-arrows
+           (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
+           (modes quote (haskell-mode literate-haskell-mode)))
+          (haskell-dollar
+           (regexp . "\\(\\s-+\\)\\(\\$\\)\\s-+")
+           (modes quote (haskell-mode literate-haskell-mode))))))
 
 ;; --------------------------------------------------------------------------------------
