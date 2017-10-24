@@ -17,11 +17,11 @@
 (defvar prem/lib-dir (expand-file-name "lib" prem/emacs-dir)
   "Directory containing external emacs libraries.")
 
-(defvar prem/code-dir (expand-file-name "../software-development/code" prem/emacs-dir)
-  "The root directory containing code.")
-
 (defvar prem/custom-file (expand-file-name "custom.el" prem/core-dir)
   "File containing my custom settings.")
+
+(defvar prem/code-dir (expand-file-name "../software-development/code" prem/emacs-dir)
+  "The root directory containing code.")
 
 
 ;; set load path for emacs
@@ -44,7 +44,7 @@
 ;; install/load packages:
 ;; first, initialize all packages from MELPA stable
 ;;   -- see "how to install packages using ELPA, MELPA" @
-;;   -- http://ergoemacs.org/emacs/emacs_package_system.html
+;;      http://ergoemacs.org/emacs/emacs_package_system.html
 (require 'package)
 (add-to-list 'package-archives
              '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
