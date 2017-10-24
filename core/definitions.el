@@ -29,4 +29,4 @@ Example \"key-bindings\": '((key-1 binding-1) (key-2 binding-2) ... )"
 	     (define-key key-map (kbd key) command)))
         key-bindings))
 
-
+;; --------------------------------------------------------------------------------------
