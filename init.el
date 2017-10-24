@@ -20,9 +20,6 @@
 (defvar prem/custom-file (expand-file-name "custom.el" prem/core-dir)
   "File containing my custom settings.")
 
-(defvar prem/code-dir (expand-file-name "../software-development/code" prem/emacs-dir)
-  "The root directory containing code.")
-
 
 ;; set load path for emacs
 ;; see https://www.gnu.org/software/emacs/manual/html_node/eintr/Loading-Files.html
@@ -96,17 +93,19 @@
 
 
 ;; set PATH same as shell --> very critical!!
-;; NOTE: this code should be AFTER install/load packages section; else, emacs
+;; NOTE: this code should come AFTER install/load packages section; else, emacs
 ;;       will not find the function (exec-path-from-shell-initialize)
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
 
-;; load core files -- see camdez @ github
-(load-library "themes")
-(load-library "modes")
-(load-library "configuration")
-(load-library "keys")
+;; core -- see camdez @ github
+;; preserve the load order!!
+(load-library "definitions")         ;; global variables, functions -- load FIRST!
+(load-library "themes")              ;; look & feel
+(load-library "modes")               ;; file editing modes
+(load-library "configuration")       ;; basic editor settings; see also custom.el
+(load-library "keys")                ;; global key bindings
 
 
 ;; system customizations -- see camdez @ github

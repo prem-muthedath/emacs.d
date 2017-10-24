@@ -33,33 +33,31 @@
             ;;   see http://www.flycheck.org/manual/latest/Quickstart.html#Quickstart           
             (flycheck-mode)
             (interactive-haskell-mode)
-            (turn-on-haskell-indentation)
+            (haskell-indentation-mode)
             ;; declaration scan using imenu; see haskell-mode manual
             (haskell-decl-scan-mode)))
 
 
 ;; NOTES:
-;;   1. mapc refactoring idea from camdez @ https://goo.gl/fjv7Jj (github)
-;;   2. haskell-compile -- see haskell-compile-command () in haskell-compile.el
-;;   3. hayoo search -- see haskell-hayoo () in haskell-hoogle.el
+;;   1. haskell-compile:
+;;        -- ghc -Wall -ferror-spans -fforce-recomp -c
+;;        -- see haskell-compile-command () in haskell-compile.el
+;;   2. hayoo search -- see haskell-hayoo () in haskell-hoogle.el
 (eval-after-load "haskell-mode"
-  '(mapc (lambda (binding)
-	   (let ((key (car binding))
-		 (command (cadr binding)))
-	     (define-key haskell-mode-map (kbd key) command)))
-	 '(("C-c C-l"  haskell-process-load-or-reload)
-           ("C-`"      haskell-interactive-bring)
-           ("C-c C-t"  haskell-process-do-type)
-           ("C-c C-i"  haskell-process-do-info)
-           ("C-c C-c"  haskell-process-cabal-build)
-           ("C-c C-k"  haskell-interactive-mode-clear)
-           ("C-c c"    haskell-process-cabal)
-           ("C-c h c"  haskell-compile)  ;; ghc -Wall -ferror-spans -fforce-recomp -c
-           ("C-c C-h"  haskell-hoogle)
-           ("C-c C-y"  haskell-hayoo)
-           ("<f8>"     haskell-navigate-imports)
-           ("M-."      haskell-mode-jump-to-def-or-tag)
-           ("M-["      align))))
+  '(map-key-bindings haskell-mode-map
+                     '(("C-c C-l"  haskell-process-load-or-reload)
+                       ("C-`"      haskell-interactive-bring)
+                       ("C-c C-t"  haskell-process-do-type)
+                       ("C-c C-i"  haskell-process-do-info)
+                       ("C-c C-c"  haskell-process-cabal-build)
+                       ("C-c C-k"  haskell-interactive-mode-clear)
+                       ("C-c c"    haskell-process-cabal)
+                       ("C-c h c"  haskell-compile)
+                       ("C-c C-h"  haskell-hoogle)
+                       ("C-c C-y"  haskell-hayoo)
+                       ("<f8>"     haskell-navigate-imports)
+                       ("M-."      haskell-mode-jump-to-def-or-tag)
+                       ("M-["      align))))
 
 
 ;; code source for flycheck-haskell:
