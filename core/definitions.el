@@ -23,10 +23,10 @@ just two items --  a key and its binding.
 
 Example \"key-bindings\": '((key-1 binding-1) (key-2 binding-2) ... )"
   ;; mapc refactoring code from camdez @ https://goo.gl/fjv7Jj (github)
-  (mapc (lambda (key-binding)
-          (let ((key (car key-binding))
-		 (command (cadr key-binding)))
-	     (define-key key-map (kbd key) command)))
+  (mapc #'(lambda (key-binding)
+            (let ((key (car key-binding))
+                  (command (cadr key-binding)))
+              (define-key key-map (kbd key) command)))
         key-bindings))
 
 ;; --------------------------------------------------------------------------------------

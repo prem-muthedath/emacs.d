@@ -117,12 +117,12 @@
 ;;          1. see /u/ phils, /u/ djangoliv @ https://goo.gl/qVs6gv (emacs.stackexchange)
 ;;          2. see /u/ phils @ https://goo.gl/9XD7Sp (stackoverflow)
 
-(defun my-visual-fill-column-mode-hook ()
-  "customized hook for enabling visual-fill-column-mode"
-  (visual-fill-column-mode 1))
+(defun turn-on-my-visual-fill-column-mode ()
+  "Turns ON visual-fill-column-mode"
+  (visual-fill-column-mode +1))
 
-(add-hook 'prog-mode-hook 'my-visual-fill-column-mode-hook)
-(add-hook 'text-mode-hook 'my-visual-fill-column-mode-hook)
+(add-hook 'prog-mode-hook #'turn-on-my-visual-fill-column-mode)
+(add-hook 'text-mode-hook #'turn-on-my-visual-fill-column-mode)
 
 
 ;; customize visual-fill-colum-mode for column-highlight-mode
@@ -133,12 +133,13 @@
 ;;      visual-fill-column-mode, and vice versa
 ;;   -- code is my hack, but see also /u/ phils @ https://goo.gl/k5ARFf
 ;;      (emacs.stackexchange) for other ideas for similiar problems
-(add-hook 'column-highlight-mode-hook (lambda ()
-                                        (if column-highlight-mode
-                                            (visual-fill-column-mode 0)
-                                          (my-visual-fill-column-mode-hook))))
+(defun my-column-highlight-mode-hook-function ()
+  "Customized hook function for column-highlight-mode."
+  (if column-highlight-mode
+      (visual-fill-column-mode 0)
+    (turn-on-my-visual-fill-column-mode)))
 
-
+(add-hook 'column-highlight-mode-hook #'my-column-highlight-mode-hook-function)
 
 ;; set the layout definition at startup
 ;; first, either programmaticaly or manually (only once), inhibit the startup screen
@@ -149,13 +150,13 @@
 ;; code (i have modified a bit) from /u/ nsukami _
 ;; buffer-list code (modified) from /u/ trey jackson @ https://goo.gl/KQwV4B (so)
 (defun my-startup-layout ()
-  "customize windows layout at startup"
+  "Customize windows layout at startup"
   (interactive)
   (setq inhibit-startup-screen t)   ;; inhibit welcome screen
   (delete-other-windows)
   (split-window-horizontally)       ;; -> |
   (find-file
-   (expand-file-name "init.el" prem/emacs-dir))
+   (expand-file-name "prem-haskell-mode.el" prem/core-dir))
   (next-multiframe-window)
   (find-file
    (expand-file-name "patience-diff/patience-diff.hs" prem/code-dir))
@@ -164,6 +165,6 @@
   (switch-to-buffer (list-buffers-noselect)))  ;; buffer list window
 
 ;; execute the layout, but only AFTER init!
-(add-hook 'after-init-hook (lambda () (my-startup-layout)))
+(add-hook 'after-init-hook #'my-startup-layout)
 
 ;; --------------------------------------------------------------------------------------

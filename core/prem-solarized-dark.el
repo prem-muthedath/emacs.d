@@ -32,7 +32,7 @@
 ;; loading a custom color theme is tricky --
 ;; see issue from /u/ Ryan @ https://goo.gl/GNgq7r (stackoverflow)
 ;; see fix from /u/ Xinan @ https://goo.gl/2VAzTU (emacs.stackexchange)
-(add-hook 'after-init-hook (lambda () (load-theme 'solarized-dark t)))
+(add-hook 'after-init-hook #'(lambda () (load-theme 'solarized-dark t)))
 
 
 ;; no face customizations -- now using solarized-dark out-of-the-box
