@@ -31,17 +31,19 @@
 ;; -- no longer using lambda () for hooks because old values remain after editing
 ;; -- plus, to avoid toggle effects, now passing explicit argument to mode functions
 ;; -- see /u/ lindydancer, /u/ phils @ https://goo.gl/gsY7fp for more details
+
+;; NOTES:
+;;  -- enable flycheck-mode but ONLY for haskell-mode!
+;;  -- to enable flycheck-mode for ALL languages, use instead:
+;;       (add-hook 'after-init-hook #'global-flycheck-mode)
+;;       see http://www.flycheck.org/manual/latest/Quickstart.html#Quickstart
+;;  -- haskell-decl-scan-mode -> imenu declaration scan; see haskell-mode manual
 (defun my-haskell-mode-hook-function ()
   "Customized hook function for haskell-mode."
-  ;; enable flycheck-mode but ONLY for haskell-mode!
-  ;; NOTE -- to enable flycheck-mode for ALL languages, use instead:
-  ;;   (add-hook 'after-init-hook #'global-flycheck-mode)
-  ;;   see http://www.flycheck.org/manual/latest/Quickstart.html#Quickstart
-  (flycheck-mode +1)
-  (interactive-haskell-mode +1)
-  (haskell-indentation-mode +1)
-  ;; declaration scan using imenu; see haskell-mode manual
-  (haskell-decl-scan-mode +1))
+  (flycheck-mode             +1)
+  (interactive-haskell-mode  +1)
+  (haskell-indentation-mode  +1)
+  (haskell-decl-scan-mode    +1))
 
 (add-hook 'haskell-mode-hook #'my-haskell-mode-hook-function)
 
@@ -54,19 +56,19 @@
 ;;   2. hayoo search -- see haskell-hayoo () in haskell-hoogle.el
 (with-eval-after-load "haskell-mode"
   (map-key-bindings haskell-mode-map
-                    '(("C-c C-l"  haskell-process-load-or-reload)
-                      ("C-`"      haskell-interactive-bring)
-                      ("C-c C-t"  haskell-process-do-type)
-                      ("C-c C-i"  haskell-process-do-info)
-                      ("C-c C-c"  haskell-process-cabal-build)
-                      ("C-c C-k"  haskell-interactive-mode-clear)
-                      ("C-c c"    haskell-process-cabal)
-                      ("C-c h c"  haskell-compile)
-                      ("C-c C-h"  haskell-hoogle)
-                      ("C-c C-y"  haskell-hayoo)
-                      ("<f8>"     haskell-navigate-imports)
-                      ("M-."      haskell-mode-jump-to-def-or-tag)
-                      ("M-["      align))))
+                    '(("C-c C-l"  .  haskell-process-load-or-reload)
+		      ("C-`"      .  haskell-interactive-bring)
+		      ("C-c C-t"  .  haskell-process-do-type)
+		      ("C-c C-i"  .  haskell-process-do-info)
+		      ("C-c C-c"  .  haskell-process-cabal-build)
+		      ("C-c C-k"  .  haskell-interactive-mode-clear)
+		      ("C-c c"    .  haskell-process-cabal)
+		      ("C-c h c"  .  haskell-compile)
+		      ("C-c C-h"  .  haskell-hoogle)
+		      ("C-c C-y"  .  haskell-hayoo)
+		      ("<f8>"     .  haskell-navigate-imports)
+		      ("M-."      .  haskell-mode-jump-to-def-or-tag)
+		      ("M-["      .  align))))
 
 
 ;; set flycheck hooks -- code source for flycheck-haskell:
@@ -103,7 +105,7 @@
 ;;      to define key-bindings using with-eval-after-load. he also mentions use of
 ;;      C-h f mode-name to get the module name (which i had found earlier -- see 6)
 ;;   8. people have faced problems setting key bindings with eval-after-load,
-;;      but i've not seen the expalanation outlined here -- perhaps their issues
+;;      but i've not seen the explanation outlined here -- perhaps their issues
 ;;      are > complex than just an incorrect file name.  btw, people've given
 ;;      various reasons (NOTE -- i've not tested these):
 ;;        -- see /u/ michael heerdagen @ https://goo.gl/h4RsQU (google groups)
