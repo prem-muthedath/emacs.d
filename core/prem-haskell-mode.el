@@ -88,7 +88,7 @@
 ;;
 ;;        (with-eval-after-load "interactive-haskell-mode"
 ;;          (add-hook 'interactive-haskell-mode-hook
-;;                    #'my-interactive-haskell-mode-hooks))
+;;                    #'my-interactive-haskell-mode-hook-function))
 ;;
 ;;      emacs will not find any file called interactive-haskell-mode.el,
 ;;      (and emacs will not complain either!!) and therefore will altogether skip
@@ -99,7 +99,7 @@
 ;;
 ;;        (with-eval-after-load "haskell"
 ;;          (add-hook 'interactive-haskell-mode-hook
-;;                    #'my-interactive-haskell-mode-hooks))
+;;                    #'my-interactive-haskell-mode-hook-function))
 ;;
 ;;   7. see /u/ legoscia @ https://goo.gl/4cjpq2 for other great ways (w/o hooks)
 ;;      to define key-bindings using with-eval-after-load. he also mentions use of
@@ -118,7 +118,7 @@
 ;;      see /u/ sanityinc.  here's the hook-based soln for the problem here:
 ;;
 ;;           (add-hook 'interactive-haskell-mode-hook
-;;                     #'my-interactive-haskell-mode-hooks)
+;;                     #'my-interactive-haskell-mode-hook-function)
 ;;
 ;;   11.see /u/ jesse @ https://goo.gl/4cjpq2 on using hooks to set key-bindings
 ;;   12.for execution order of eval-after-load and hooks, see /u/ phils @ 
@@ -139,24 +139,27 @@
 ;; core code @ https://goo.gl/NejP3t (github.com/haskell)
 ;; core code + binding to align command @ https://goo.gl/s39tMB (PierreR github)
 ;; mapc refactoring idea from camdez @ github
+(defvar my-haskell-align-rules
+  '((haskell-types
+     (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
+     (modes quote (haskell-mode literate-haskell-mode)))
+    (haskell-assignment
+     (regexp . "\\(\\s-+\\)=\\s-+")
+     (modes quote (haskell-mode literate-haskell-mode)))
+    (haskell-arrows
+     (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
+     (modes quote (haskell-mode literate-haskell-mode)))
+    (haskell-left-arrows
+     (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
+     (modes quote (haskell-mode literate-haskell-mode)))
+    (haskell-dollar
+     (regexp . "\\(\\s-+\\)\\(\\$\\)\\s-+")
+     (modes quote (haskell-mode literate-haskell-mode))))
+    "Alignment rules for haskell code.")
+
 (with-eval-after-load 'align
   (mapc (lambda (rule)
           (add-to-list 'align-rules-list rule))
-        '((haskell-types
-           (regexp . "\\(\\s-+\\)\\(::\\|∷\\)\\s-+")
-           (modes quote (haskell-mode literate-haskell-mode)))
-          (haskell-assignment
-           (regexp . "\\(\\s-+\\)=\\s-+")
-           (modes quote (haskell-mode literate-haskell-mode)))
-          (haskell-arrows
-           (regexp . "\\(\\s-+\\)\\(->\\|→\\)\\s-+")
-           (modes quote (haskell-mode literate-haskell-mode)))
-          (haskell-left-arrows
-           (regexp . "\\(\\s-+\\)\\(<-\\|←\\)\\s-+")
-           (modes quote (haskell-mode literate-haskell-mode)))
-          (haskell-dollar
-           (regexp . "\\(\\s-+\\)\\(\\$\\)\\s-+")
-           (modes quote (haskell-mode literate-haskell-mode))))))
-
+        my-haskell-align-rules))
 ;; --------------------------------------------------------------------------------------
 
