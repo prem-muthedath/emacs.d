@@ -9,6 +9,7 @@
 !/core/
 /core/**
 !/core/*.el
+/core/notes.el
 !/lib/
 /lib/**
 !/lib/README.md

@@ -33,7 +33,7 @@
 ;;
 ;;          instead of:
 ;;
-;;              '(("C-x v2" . (function magit-status)))
+;;              '(("C-x v2" . magit-status))
 ;;
 ;;       -- (eval (read "'((\"C-x v2\" . #'magit-status))")) gives:
 ;;
@@ -41,9 +41,10 @@
 ;;
 ;;          instead of:
 ;;
-;;              (("C-x v2" . (function magit-status)))
+;;              (("C-x v2" . magit-status))
 ;;
-;;       -- we end up with an expression that no longer has (function magit-status)
+;;       -- #'magit-status, because it was within a quoted expression, never
+;;          gets evaluated -- and therefore never made use of
 ;;       -- the compiler therefore will NOT warn about any missing functions
 ;;          if you use #' within a quoted nested expression
 ;;       -- so don't use #' within quoted expressions -- both '(..) and `(..)

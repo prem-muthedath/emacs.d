@@ -5,6 +5,8 @@
 ;; load emacs-lisp-mode
 (load "prem-emacs-lisp-mode")
 
+;; load ielm-mode
+(load "prem-ielm-mode")
 
 ;; load hasekll-mode
 (load "prem-haskell-mode")

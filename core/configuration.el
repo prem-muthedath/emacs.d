@@ -156,7 +156,7 @@
   (delete-other-windows)
   (split-window-horizontally)       ;; -> |
   (find-file
-   (expand-file-name "prem-haskell-mode.el" prem/core-dir))
+   (expand-file-name "prem-ielm-mode.el" prem/core-dir))
   (next-multiframe-window)
   (find-file
    (expand-file-name "patience-diff/patience-diff.hs" prem/code-dir))
