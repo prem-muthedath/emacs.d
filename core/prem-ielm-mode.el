@@ -53,7 +53,8 @@
 ;;
 ;;
 (defun my-ielm-mode-return (arg)
-  "Evaluate the Lisp expression after the prompt -- using `eval-last-sexp' instead of `ielm-eval-input' -- and format the result -- using `prin1' instead of `pp'."
+  "Evaluate the elisp expression after the prompt -- using `eval-last-sexp' instead of
+`ielm-eval-input' -- and format the result -- using `prin1' instead of `pp'."
   ;; this is the key function -- a hack -- that solves the problem by
   ;; using `prin1' to format the output, instead of `pp-to-string', since `prin1'
   ;; outputs in lisp syntax.
