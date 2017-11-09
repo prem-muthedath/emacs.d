@@ -22,7 +22,7 @@
 ;; SOLUTION:
 ;;   -- well, since we don't see an easy way out with IELM code, our next options
 ;;      include looking at existing Emacs commands for expression evaluation that
-;;      outputs in lisp syntax, such as M-: and C-x C-e
+;;      output in lisp syntax, such as M-: and C-x C-e
 ;;   -- both M-: -- `eval-expression' -- as well as C-x C-e -- `eval-last-sexp' --
 ;;      will output in list syntax, i.e., ((foo (quote bar)))
 ;;   -- however, they're both inconvenient:
