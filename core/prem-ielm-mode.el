@@ -24,7 +24,7 @@
 ;;      include looking at existing Emacs commands for expression evaluation that
 ;;      output in lisp syntax, such as M-: and C-x C-e
 ;;   -- both M-: -- `eval-expression' -- as well as C-x C-e -- `eval-last-sexp' --
-;;      will output in list syntax, i.e., ((foo (quote bar)))
+;;      output in list syntax, i.e., ((foo (quote bar)))
 ;;   -- however, they're both inconvenient:
 ;;       -- to use M-:, you've to copy the expression from `IELM' into the minibuffer
 ;;       -- moreover, M-: outputs in the echo area, not in `IELM'
@@ -39,17 +39,16 @@
 ;;      -- we include our customizations as an ielm-mode-hook
 ;;      -- our code is a quick hack:
 ;;          -- it uses `eval-last-sexp' to evaluate the elisp expression
-;;          -- formats the output in the same way that `ielm-eval-input' does,
-;;             but using `prin1' -- which outputs in lisp syntax -- instead of
-;;             `pp-to-string'
+;;          -- formats output just like`ielm-eval-input' does, but uses
+;;             `prin1' -- which outputs in lisp syntax -- instead of `pp-to-string'
 ;;          -- for process input and output, it uses the same code (copied from
 ;;             `ielm-send-input' and `ielm-eval-input') in `ielm.el'
 ;;          -- it works for the "usual" stuff, but doesn't handle:
 ;;             -- multi-line input
 ;;             -- empty input
 ;;             -- error conditions
-;;          -- we bind it to `s-<return>', instead of `<return>', so that
-;;             users still have the option to use the `IELM' code if our code fails 
+;;          -- we bind it to `s-<return>', instead of `<return>', so users
+;;             still have the option to use the `IELM' code if this code fails 
 ;;
 ;;
 (defun my-ielm-mode-return (arg)
@@ -60,7 +59,7 @@
   ;; outputs in lisp syntax.
   ;;
   ;; but this hack only works for one-line elisp expressions typed at the prompt.
-  ;; it altogther ignores all multiline-input logic in `ielm-return',
+  ;; it altogether ignores all multiline-input logic in `ielm-return',
   ;; as well as all error conditions. it also doesn't handle empty inputs.
   ;;
   ;; still, at a high level, it mimics the control flow in an `ielm-return' call:
