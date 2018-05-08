@@ -1,15 +1,36 @@
+
 # emacs .gitignore file
-# ignore everything (all nested levels) under project root -- denoted by /** -- EXCEPT /init.el, /core/*.el, /lisp/*.el, and /README.md
-# ignore all files with extension el~
+#
+# ignore everything (all nested levels) under project root -- denoted by /** -- EXCEPT:
+#   1. *.el ANYWHERE, including in ALL INCLUDED NESTED directories 
+#   2. /.gitignore, /README.md files DIRECTLY under project root
+#   3. /core/ and /lib/ directories
+#   4. since we've asked in step 1 to include *.el files, this will 
+#      mean that all /core/*.el and /lib/*.el files will be included.
+#
+#      however, since we started off with the statement /** -- which means 
+#      ignore everything -- and then made certain exceptions, like *.el files, 
+#      all files & folders other than *.el in /core/ & /lib/ will be ignored.
+#
+#   EXCEPTIONS:
+#   steps 1 - 4 state what should be included, and git will ignore everything else.
+#   however, we want to ignore some *.el files and want to include other files in 
+#   certain sub-directories.  we make these exceptions in the following sequence:
+#     (a)  /core/notes.el -- will ignore just this one .el file in /core/
+#     (b)  /lib/** -- will ignore everything under /lib/, including all *.el files
+#     (c)  !/lib/README.md -- will then include just this one file in /lib/  
+####################################################################################
+
 /**
-*.el~
-!/init.el
+
+!*.el
 !/.gitignore
 !/README.md
+
 !/core/
-/core/**
-!/core/*.el
 /core/notes.el
+
 !/lib/
 /lib/**
 !/lib/README.md
+
